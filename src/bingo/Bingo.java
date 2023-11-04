@@ -40,6 +40,9 @@ import java.net.URLConnection;
 import java.util.Scanner;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
+import java.awt.GridBagLayout;
+import net.miginfocom.swing.MigLayout;
+import java.awt.SystemColor;
 
 public class Bingo extends JFrame {
 
@@ -47,18 +50,12 @@ public class Bingo extends JFrame {
 	private JPanel contentPane;
 	private JButton btn2;
 	private JButton btn1;
-	private JButton btn3;
-	private JButton btn4;
 	private JButton btn5;
 	private JButton btn6;
 	private JButton btn7;
-	private JButton btn8;
-	private JButton btn9;
 	private JButton btn10;
 	private JButton btn11;
 	private JButton btn12;
-	private JButton btn13;
-	private JButton btn14;
 	private JButton btn15;
 	private JTextPane textNumero;
 	private JTextPane textAnterior;
@@ -71,6 +68,7 @@ public class Bingo extends JFrame {
 	private int[] numerosCarton = new int[15];
 	private int numBolas = 0;
 	private Timer timer;
+	private Timer parpadeo;
 	private boolean cantoLinea = false;
 	private BufferedReader scArchivo;
 	private BufferedReader scArchivoControl;
@@ -81,6 +79,13 @@ public class Bingo extends JFrame {
 	private File ficheroUsers = new File("data/users.txt");
 	private int bola=0;
 	private int anterior = 0;
+	private JButton btn14;
+	private JButton btn13;
+	private JButton btn9;
+	private JButton btn8;
+	private JButton btn4;
+	private JButton btn3;
+	private JButton botonParpadeando;
 
 	/**
 	 * Launch the application.
@@ -112,119 +117,116 @@ public class Bingo extends JFrame {
 			respuestas[i] = "";
 		}
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 627, 377);
+		setBounds(100, 100, 625, 380);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		contentPane.setLayout(new MigLayout("", "[89px,grow][89px,grow][89px,grow][89px,grow][89px,grow][89px,grow][89px,grow]", "[120px,grow][64px,grow][62px,grow][64px,grow]"));
 		
 		textNumero = new JTextPane();
 		textNumero.setFont(new Font("Tahoma", Font.PLAIN, 30));
 		textNumero.setEditable(false);
-		textNumero.setBounds(10, 11, 441, 120);
-		contentPane.add(textNumero);
+		contentPane.add(textNumero, "cell 0 0 5 1,grow");
 		StyledDocument doc = textNumero.getStyledDocument();
 		SimpleAttributeSet center = new SimpleAttributeSet();
 		StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
 		doc.setParagraphAttributes(0, doc.getLength(), center, false);
 		
 		btn1 = new JButton("");
+		btn1.setBackground(SystemColor.activeCaption);
 		btn1.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		btn1.setBounds(10, 144, 89, 64);
-		contentPane.add(btn1);
+		contentPane.add(btn1, "cell 0 1,grow");
 		
 		btn2 = new JButton("");
+		btn2.setBackground(SystemColor.activeCaption);
 		btn2.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		btn2.setBounds(98, 144, 89, 64);
-		contentPane.add(btn2);
+		contentPane.add(btn2, "cell 1 1,grow");
 		
 		btn3 = new JButton("");
+		btn3.setBackground(SystemColor.activeCaption);
 		btn3.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		btn3.setBounds(186, 144, 89, 64);
-		contentPane.add(btn3);
+		contentPane.add(btn3, "cell 2 1,grow");
 		
 		btn4 = new JButton("");
+		btn4.setBackground(SystemColor.activeCaption);
 		btn4.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		btn4.setBounds(274, 144, 89, 64);
-		contentPane.add(btn4);
+		contentPane.add(btn4, "cell 3 1,grow");
 		
 		btn5 = new JButton("");
+		btn5.setBackground(SystemColor.activeCaption);
 		btn5.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		btn5.setBounds(362, 144, 89, 64);
-		contentPane.add(btn5);
+		contentPane.add(btn5, "cell 4 1,grow");
 		
 		btn6 = new JButton("");
+		btn6.setBackground(SystemColor.activeCaption);
 		btn6.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		btn6.setBounds(10, 207, 89, 64);
-		contentPane.add(btn6);
+		contentPane.add(btn6, "cell 0 2,grow");
 		
 		btn7 = new JButton("");
+		btn7.setBackground(SystemColor.activeCaption);
 		btn7.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		btn7.setBounds(98, 207, 89, 64);
-		contentPane.add(btn7);
+		contentPane.add(btn7, "flowx,cell 1 2,grow");
 		
 		btn8 = new JButton("");
+		btn8.setBackground(SystemColor.activeCaption);
 		btn8.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		btn8.setBounds(186, 207, 89, 64);
-		contentPane.add(btn8);
+		contentPane.add(btn8, "cell 2 2,grow");
 		
 		btn9 = new JButton("");
+		btn9.setBackground(SystemColor.activeCaption);
 		btn9.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		btn9.setBounds(274, 207, 89, 64);
-		contentPane.add(btn9);
+		contentPane.add(btn9, "cell 3 2,grow");
 		
 		btn10 = new JButton("");
+		btn10.setBackground(SystemColor.activeCaption);
 		btn10.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		btn10.setBounds(362, 207, 89, 64);
-		contentPane.add(btn10);
+		contentPane.add(btn10, "cell 4 2,grow");
+		
+		btnLBingo = new JButton("FOLINGO");
+		contentPane.add(btnLBingo, "cell 6 2,grow");
+		btnLBingo.setEnabled(false);
 		
 		btn11 = new JButton("");
+		btn11.setBackground(SystemColor.activeCaption);
 		btn11.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		btn11.setBounds(10, 270, 89, 64);
-		contentPane.add(btn11);
+		contentPane.add(btn11, "cell 0 3,grow");
 		
 		btn12 = new JButton("");
+		btn12.setBackground(SystemColor.activeCaption);
 		btn12.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		btn12.setBounds(98, 270, 89, 64);
-		contentPane.add(btn12);
+		contentPane.add(btn12, "cell 1 3,grow");
 		
 		btn13 = new JButton("");
+		btn13.setBackground(SystemColor.activeCaption);
 		btn13.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		btn13.setBounds(186, 270, 89, 64);
-		contentPane.add(btn13);
+		contentPane.add(btn13, "cell 2 3,grow");
 		
 		btn14 = new JButton("");
+		btn14.setBackground(SystemColor.activeCaption);
 		btn14.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		btn14.setBounds(274, 270, 89, 64);
-		contentPane.add(btn14);
+		contentPane.add(btn14, "cell 3 3,grow");
 		
 		btn15 = new JButton("");
+		btn15.setBackground(SystemColor.activeCaption);
 		btn15.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		btn15.setBounds(362, 270, 89, 64);
-		contentPane.add(btn15);
+		contentPane.add(btn15, "cell 4 3,grow");
 		
 		textAnterior = new JTextPane();
-		textAnterior.setBounds(472, 11, 129, 120);
-		contentPane.add(textAnterior);
+		textAnterior.setBackground(new Color(255, 255, 255));
+		textAnterior.setEditable(false);
+		contentPane.add(textAnterior, "cell 5 0 2 1,grow");
 		StyledDocument doc2 = textAnterior.getStyledDocument();
 		SimpleAttributeSet center2 = new SimpleAttributeSet();
 		StyleConstants.setAlignment(center2, StyleConstants.ALIGN_CENTER);
 		doc2.setParagraphAttributes(0, doc2.getLength(), center2, false);
 		
 		btnLinea = new JButton("LINEA");
-		btnLinea.setBounds(517, 144, 84, 64);
-		contentPane.add(btnLinea);
-		btnLinea.setEnabled(true);
-		
-		btnLBingo = new JButton("FOLINGO");
-		btnLBingo.setBounds(517, 207, 84, 64);
-		contentPane.add(btnLBingo);
-		btnLBingo.setEnabled(true);
+		contentPane.add(btnLinea, "cell 6 1,grow");
+		btnLinea.setEnabled(false);
 		
 		btnJugar = new JButton("JUGAR");
-		btnJugar.setBounds(517, 270, 84, 64);
-		contentPane.add(btnJugar);
+		contentPane.add(btnJugar, "cell 6 3,grow");
 		crearArrayBotones();
 		registrarEventos();
 	}
@@ -294,7 +296,13 @@ public class Bingo extends JFrame {
 		for (int i = 0;i<numerosCarton.length;i++) {
 			if (numerosCarton[i] == bola) {
 				arrayBotones[i].setEnabled(true);
-			} else arrayBotones[i].setEnabled(false);
+				arrayBotones[i].setBackground(SystemColor.activeCaption);
+				botonParpadeando = arrayBotones[i];
+				parpadeo.start();
+			} else {
+				arrayBotones[i].setEnabled(false);
+				if (arrayBotones[i].getBackground()!=Color.GREEN) arrayBotones[i].setBackground(null);
+			}
 		}	
 	}
 	
@@ -333,6 +341,7 @@ public class Bingo extends JFrame {
 			    		btnLBingo.setEnabled(false);
 			    		btnLinea.setEnabled(false);
 			    		btnJugar.setEnabled(true);
+			    		parpadeo.stop();
 			    		timer.stop();
 			    	} else if(control == -1) {
 			    		
@@ -348,6 +357,10 @@ public class Bingo extends JFrame {
 		    		anterior = bola;
 		    		bola = Integer.parseInt(scArchivo.readLine());	
 			    	textNumero.setText("" + preguntas[bola-1] + "\r\n" + (bola) + " - " + respuestas[bola-1] + "");
+			    	if (bola!=anterior) {
+			    		parpadeo.stop();
+			    		botonParpadeando=null;
+			    	}
 			    	comprobarBotones(bola);
 				} catch (NumberFormatException e1) {
 					
@@ -357,7 +370,17 @@ public class Bingo extends JFrame {
 				}
 		    }
 		});
-
+		
+		
+		parpadeo = new Timer (500, new ActionListener ()
+		{
+		    public void actionPerformed(ActionEvent e)
+		    {
+		    	if (botonParpadeando.getBackground()==SystemColor.activeCaption) {
+		    		botonParpadeando.setBackground(null);
+		    	} else botonParpadeando.setBackground(SystemColor.activeCaption);
+		    }
+		});
 		
 		//REGISTRAR LOS EVENTOS actionPerformed PARA LOS 9 BOTONES
 		for (int i = 0; i < arrayBotones.length; i++) {
@@ -366,6 +389,7 @@ public class Bingo extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					JButton btn=(JButton)e.getSource();	
+					parpadeo.stop();
 					btn.setBackground(Color.GREEN);
 					btn.setEnabled(false);
 					if (!cantoLinea) tengoLinea();

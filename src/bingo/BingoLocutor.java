@@ -28,8 +28,7 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import java.awt.Dimension;
-import java.awt.Component;
+import javax.swing.JTable;
 
 public class BingoLocutor extends JFrame {
 
@@ -90,38 +89,43 @@ public class BingoLocutor extends JFrame {
 			haSalido[i] = false;
 		}
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 904, 570);
+		setBounds(100, 100, 847, 491);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		
 		lblBola = new JLabel("Empezando la partida.");
-		lblBola.setPreferredSize(new Dimension(520, 520));
+		lblBola.setBounds(10, 14, 613, 427);
 		lblBola.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBola.setFont(new Font("Tahoma", Font.PLAIN, 40));
 		
 		btnComenzar = new JButton("Empezar");
+		btnComenzar.setBounds(633, 377, 89, 64);
 		
 		btnSalir = new JButton("Salir");
+		btnSalir.setBounds(732, 377, 89, 64);
 		
 		lblAnterior = new JLabel("New label");
-		lblAnterior.setPreferredSize(new Dimension(300, 200));
+		lblAnterior.setBounds(633, 14, 188, 197);
 		lblAnterior.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		btnBola = new JButton("Sacar Bola");
+		btnBola.setBounds(633, 301, 89, 64);
 		btnBola.setEnabled(false);
 		
 		btnHistorial = new JButton("Historial");
+		btnHistorial.setBounds(732, 301, 89, 64);
 		btnHistorial.setEnabled(false);
 		
 		btnAuto = new JButton("Auto");
-		btnAuto.setAlignmentY(Component.TOP_ALIGNMENT);
+		btnAuto.setBounds(633, 225, 89, 64);
 		btnAuto.setEnabled(false);
 		
 		btnParar = new JButton("Parar");
+		btnParar.setBounds(732, 225, 89, 64);
 		btnParar.setEnabled(false);
-		contentPane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		contentPane.setLayout(null);
 		contentPane.add(lblBola);
 		contentPane.add(lblAnterior);
 		contentPane.add(btnAuto);
@@ -130,6 +134,11 @@ public class BingoLocutor extends JFrame {
 		contentPane.add(btnHistorial);
 		contentPane.add(btnComenzar);
 		contentPane.add(btnSalir);
+		
+		JTable table = new JTable();
+		table.setEnabled(false);
+		table.setBounds(10, 14, 613, 427);
+		contentPane.add(table);
 		try {
 			fwBolas = new BufferedWriter(new FileWriter(ficheroBolas,true));
 			try {
@@ -153,6 +162,15 @@ public class BingoLocutor extends JFrame {
         	btnBola.setEnabled(false);
         	btnAuto.setEnabled(false);
         	btnParar.setEnabled(false);
+    		timerControl.stop();
+    		try {
+				fwControl = new FileWriter(ficheroControl,true);
+				fwControl.write("4\n");
+				fwControl.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         	return;
         }
 		if (bola!=0) lblAnterior.setText((bola) + " - " + respuestas[bola-1] + "");
@@ -192,6 +210,7 @@ public class BingoLocutor extends JFrame {
 			    		timer.stop();
 			    		lblBola.setText("Alguien ha cantado linea.");
 			    		btnBola.setEnabled(false);
+			    		btnAuto.setEnabled(false);
 			    	} else if(control == 2) {
 			    		fwControl = new FileWriter(ficheroControl,true);
 						fwControl.write("0\n");
@@ -201,6 +220,7 @@ public class BingoLocutor extends JFrame {
 			    		timer.stop();
 			    		lblBola.setText("Alguien ha cantado bingo.");
 			    		btnBola.setEnabled(false);
+			    		btnAuto.setEnabled(false);
 			    	} else if(control == 4) {
 			    		lblBola.setText("El ganador ha sido X Jugador");
 			    		timer.stop();
@@ -212,7 +232,10 @@ public class BingoLocutor extends JFrame {
 						btnParar.setEnabled(false);
 			    	} else {
 			    		if (auto) timer.start();
-			    		else btnBola.setEnabled(true);
+			    		else {
+			    			btnBola.setEnabled(true);
+			    			btnAuto.setEnabled(true);
+			    		}
 			    	}
 				} catch (NumberFormatException e1) {
 					
@@ -255,6 +278,7 @@ public class BingoLocutor extends JFrame {
 					lblBola.setText("Sala Creada\nEsperando Jugadores.");
 					lblAnterior.setText("");
 					bola = 0;
+					numBolas = 0;
 					btnComenzar.setEnabled(false);
 					btnAuto.setEnabled(true);
 					btnBola.setEnabled(true);
