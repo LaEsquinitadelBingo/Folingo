@@ -15,14 +15,21 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import javax.swing.SwingConstants;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import java.awt.Dimension;
+import java.awt.Component;
 
 public class BingoLocutor extends JFrame {
 
@@ -34,7 +41,6 @@ public class BingoLocutor extends JFrame {
 	private JButton btnBola;
 	private JButton btnComenzar;
 	private JButton btnSalir;
-	private JLabel lblNewLabel_1;
 	private JLabel lblBola;
 	private String[] preguntas = new String[50];
 	private String[] respuestas = new String[50];
@@ -45,10 +51,13 @@ public class BingoLocutor extends JFrame {
 	private Timer timerControl;
 	private boolean cantoLinea = false;
 	private File ficheroBolas = new File("data/bolas.txt");
-	private FileWriter fwBolas;
-	private Scanner scFichero;
-	private Scanner scFicheroControl;
+	private BufferedWriter fwBolas;
+	private FileWriter fwControl;
+	private BufferedReader scFicheroControl;
 	private File ficheroControl = new File("data/control.txt");
+	private boolean auto = false;
+	private JLabel lblAnterior;
+	private int bola = 0;
 	/**
 	 * Launch the application.
 	 */
@@ -69,6 +78,7 @@ public class BingoLocutor extends JFrame {
 	 * Create the frame.
 	 */
 	public BingoLocutor() {
+		setTitle("FOLINGO");
 		UIManager.put("textInactiveText", new ColorUIResource(Color.BLACK));
 		for (int i=0;i<preguntas.length;i++) {
 			preguntas[i] = "";
@@ -80,49 +90,86 @@ public class BingoLocutor extends JFrame {
 			haSalido[i] = false;
 		}
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 847, 491);
+		setBounds(100, 100, 904, 570);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
 		
-		lblBola = new JLabel("Bola");
+		lblBola = new JLabel("Empezando la partida.");
+		lblBola.setPreferredSize(new Dimension(520, 520));
 		lblBola.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBola.setFont(new Font("Tahoma", Font.PLAIN, 40));
-		lblBola.setBounds(10, 14, 613, 427);
-		contentPane.add(lblBola);
 		
 		btnComenzar = new JButton("Empezar");
-		btnComenzar.setBounds(633, 377, 89, 64);
-		contentPane.add(btnComenzar);
 		
 		btnSalir = new JButton("Salir");
-		btnSalir.setBounds(732, 377, 89, 64);
-		contentPane.add(btnSalir);
 		
-		lblNewLabel_1 = new JLabel("New label");
-		lblNewLabel_1.setBounds(633, 14, 188, 197);
-		contentPane.add(lblNewLabel_1);
+		lblAnterior = new JLabel("New label");
+		lblAnterior.setPreferredSize(new Dimension(300, 200));
+		lblAnterior.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		btnBola = new JButton("Sacar Bola");
-		btnBola.setBounds(633, 301, 89, 64);
-		contentPane.add(btnBola);
+		btnBola.setEnabled(false);
 		
 		btnHistorial = new JButton("Historial");
-		btnHistorial.setBounds(732, 301, 89, 64);
-		contentPane.add(btnHistorial);
+		btnHistorial.setEnabled(false);
 		
 		btnAuto = new JButton("Auto");
-		btnAuto.setBounds(633, 225, 89, 64);
-		contentPane.add(btnAuto);
+		btnAuto.setAlignmentY(Component.TOP_ALIGNMENT);
+		btnAuto.setEnabled(false);
 		
 		btnParar = new JButton("Parar");
-		btnParar.setBounds(732, 225, 89, 64);
+		btnParar.setEnabled(false);
+		contentPane.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		contentPane.add(lblBola);
+		contentPane.add(lblAnterior);
+		contentPane.add(btnAuto);
 		contentPane.add(btnParar);
+		contentPane.add(btnBola);
+		contentPane.add(btnHistorial);
+		contentPane.add(btnComenzar);
+		contentPane.add(btnSalir);
+		try {
+			fwBolas = new BufferedWriter(new FileWriter(ficheroBolas,true));
+			try {
+				scFicheroControl = new BufferedReader(new FileReader("data/control.txt"));
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}	
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		registrarEventos();
 	}
 	
+	public void sacarBola() {
+		if (numBolas==50) {
+        	timer.stop();
+        	lblBola.setText("No ha habido ningun ganador :(");
+        	btnComenzar.setEnabled(true);
+        	btnBola.setEnabled(false);
+        	btnAuto.setEnabled(false);
+        	btnParar.setEnabled(false);
+        	return;
+        }
+		if (bola!=0) lblAnterior.setText((bola) + " - " + respuestas[bola-1] + "");
+        do {
+        	bola = ((int) (Math.random()*50+1));
+        } while (haSalido[bola-1]);
+        lblBola.setText("" + preguntas[bola-1] + "\r\n" + (bola) + " - " + respuestas[bola-1] + "");
+        haSalido[bola-1] = true;
+        try {
+			fwBolas.write("\r\n"+bola);
+			fwBolas.flush();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        numBolas++;
+	}
 	
 	public void registrarEventos() {
 		
@@ -130,47 +177,49 @@ public class BingoLocutor extends JFrame {
 		{
 		    public void actionPerformed(ActionEvent e)
 		    {
-		    	if (numBolas==50) {
-		        	timer.stop();
-		        	JOptionPane.showConfirmDialog(null, "No ha habido ningun ganador :(",
-		                    "CLOSED_OPTION", JOptionPane.CLOSED_OPTION,
-		                    JOptionPane.INFORMATION_MESSAGE);
-		        	btnComenzar.setEnabled(true);
-		        	return;
-		        }
-		    	int bola;
-		        do {
-		        	bola = ((int) (Math.random()*50+1)) - 1;
-		        } while (haSalido[bola]);
-		        lblBola.setText("" + preguntas[bola] + "\r\n" + (bola) + " - " + respuestas[bola] + "");
-		        haSalido[bola] = true;
-		        try {
-					fwBolas = new FileWriter(ficheroBolas);
-		        	System.out.println(" "+bola);
-					fwBolas.write(" "+bola);
-					fwBolas.close();
+		    	sacarBola();   
+		     }
+		});
+		
+		timerControl = new Timer (300, new ActionListener ()
+		{
+		    public void actionPerformed(ActionEvent e)
+		    {
+		    	int control;
+		    	try {
+		    		control = Integer.parseInt(scFicheroControl.readLine());
+			    	if (control == 1) {
+			    		timer.stop();
+			    		lblBola.setText("Alguien ha cantado linea.");
+			    		btnBola.setEnabled(false);
+			    	} else if(control == 2) {
+			    		fwControl = new FileWriter(ficheroControl,true);
+						fwControl.write("0\n");
+						fwControl.close();
+			    		lblBola.setText("Enhorabuena, la Linea es Correcta.");
+			    	} else if(control == 3) {
+			    		timer.stop();
+			    		lblBola.setText("Alguien ha cantado bingo.");
+			    		btnBola.setEnabled(false);
+			    	} else if(control == 4) {
+			    		lblBola.setText("El ganador ha sido X Jugador");
+			    		timer.stop();
+			    		timerControl.stop();
+			    		btnComenzar.setEnabled(true);
+			    		btnAuto.setEnabled(false);
+						btnBola.setEnabled(false);
+						btnHistorial.setEnabled(false);
+						btnParar.setEnabled(false);
+			    	} else {
+			    		if (auto) timer.start();
+			    		else btnBola.setEnabled(true);
+			    	}
+				} catch (NumberFormatException e1) {
+					
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-		        numBolas++;
-		        
-		     }
-		});
-		
-		timerControl = new Timer (1000, new ActionListener ()
-		{
-		    public void actionPerformed(ActionEvent e)
-		    {
-		    	try {
-					scFicheroControl = new Scanner(ficheroControl);
-					if (scFicheroControl.nextInt()==1) timer.stop();
-					else timer.start();
-				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-		        
 		     }
 		});
 	//REGISTRAR LOS EVENTOS actionPerformed PARA LOS 9 BOTONES
@@ -191,57 +240,27 @@ public class BingoLocutor extends JFrame {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					timer.start();
+					timerControl.start();
 					try {
-						fwBolas = new FileWriter(ficheroBolas);
-						fwBolas.write(-1);
-						fwBolas.close();
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					try {
-						fwBolas = new FileWriter(ficheroControl);
-						fwBolas.write(0);
-						fwBolas.close();
+						new FileWriter(ficheroBolas, false).close();
+						new FileWriter(ficheroControl, false).close();
+						fwControl = new FileWriter(ficheroControl,true);
+						fwControl.write("0\n");
+						fwControl.close();
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					//DESACTIVAR EL PROPIO NUEVA PARTIDA
+					lblBola.setText("Sala Creada\nEsperando Jugadores.");
+					lblAnterior.setText("");
+					bola = 0;
 					btnComenzar.setEnabled(false);
+					btnAuto.setEnabled(true);
+					btnBola.setEnabled(true);
+					btnHistorial.setEnabled(true);
 				}
 			});
-			
-			/*btnLinea.addActionListener(new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					timer.stop();
-					//DESACTIVAR EL PROPIO NUEVA PARTIDA
-					JOptionPane.showConfirmDialog(null, "Enhorabuena has hecho linea.",
-		                    "LINEA", JOptionPane.CLOSED_OPTION,
-		                    JOptionPane.INFORMATION_MESSAGE);
-					timer.start();
-					btnLinea.setEnabled(false);
-					cantoLinea = true;
-				}
-			});*/
-			
-			/*btnLBingo.addActionListener(new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					timer.stop();
-					//DESACTIVAR EL PROPIO NUEVA PARTIDA
-					JOptionPane.showConfirmDialog(null, "Enhorabuena has hecho bingo!!!!!!!!!!!",
-		                    "LINEA", JOptionPane.CLOSED_OPTION,
-		                    JOptionPane.INFORMATION_MESSAGE);
-					timer.start();
-					btnLBingo.setEnabled(false);
-					btnJugar.setEnabled(true);
-				}
-			});*/
 			
 			btnSalir.addActionListener(new ActionListener() {
 
@@ -250,8 +269,48 @@ public class BingoLocutor extends JFrame {
 					//SALIR DEL PROGRAMA PIDIENDO CONFIRMACIÓN
 					if(JOptionPane.showConfirmDialog(BingoLocutor.this, "¿Seguro que quieres salir?", "Aviso",
 							JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
+						try {
+							fwBolas.close();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 						System.exit(0);
 					}
+				}
+			});
+			btnBola.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					//SALIR DEL PROGRAMA PIDIENDO CONFIRMACIÓN
+					sacarBola();
+				}
+			});
+			
+			btnAuto.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					//SALIR DEL PROGRAMA PIDIENDO CONFIRMACIÓN
+					timer.start();
+					auto = true;
+					btnAuto.setEnabled(false);
+					btnParar.setEnabled(true);
+					btnBola.setEnabled(false);
+				}
+			});
+			
+			btnParar.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					//SALIR DEL PROGRAMA PIDIENDO CONFIRMACIÓN
+					timer.stop();
+					auto = false;
+					btnParar.setEnabled(false);
+					btnAuto.setEnabled(true);
+					btnBola.setEnabled(true);
 				}
 			});
 			
