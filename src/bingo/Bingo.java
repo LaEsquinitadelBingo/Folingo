@@ -28,12 +28,14 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.net.URL;
 import java.net.URLConnection;
@@ -43,6 +45,7 @@ import java.awt.Font;
 import java.awt.GridBagLayout;
 import net.miginfocom.swing.MigLayout;
 import java.awt.SystemColor;
+import java.awt.Dimension;
 
 public class Bingo extends JFrame {
 
@@ -77,6 +80,7 @@ public class Bingo extends JFrame {
 	private File ficheroControl = new File("data/control.txt");
 	private FileWriter fwArchivoUsers;
 	private File ficheroUsers = new File("data/users.txt");
+	private File ficheroPreguntas = new File("data/Preguntas.txt");
 	private int bola=0;
 	private int anterior = 0;
 	private JButton btn14;
@@ -86,6 +90,9 @@ public class Bingo extends JFrame {
 	private JButton btn4;
 	private JButton btn3;
 	private JButton botonParpadeando;
+	private String usuario;
+	private int preguntaLinea, preguntaBingo;
+	private int penalizacion = 0;
 
 	/**
 	 * Launch the application.
@@ -110,14 +117,31 @@ public class Bingo extends JFrame {
 	public Bingo() {
 		setTitle("FOLINGO");
 		UIManager.put("textInactiveText", new ColorUIResource(Color.BLACK));
-		for (int i=0;i<preguntas.length;i++) {
-			preguntas[i] = "";
+		try {
+			Scanner sc;
+			try {
+				sc = new Scanner(new InputStreamReader(new FileInputStream(ficheroPreguntas), "UTF-8"));
+				int numPreguntas = 0;
+				while (sc.hasNext()) {	
+					preguntas[numPreguntas] = sc.nextLine();
+					respuestas[numPreguntas] = sc.nextLine(); 
+					numPreguntas++;
+					if (numPreguntas==50) break;
+				}
+				sc.close();
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		for (int i=0;i<respuestas.length;i++) {
-			respuestas[i] = "";
-		}
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 625, 380);
+		setBounds(100, 100, 691, 383);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -125,60 +149,71 @@ public class Bingo extends JFrame {
 		contentPane.setLayout(new MigLayout("", "[89px,grow][89px,grow][89px,grow][89px,grow][89px,grow][89px,grow][89px,grow]", "[120px,grow][64px,grow][62px,grow][64px,grow]"));
 		
 		textNumero = new JTextPane();
+		textNumero.setBackground(SystemColor.control);
 		textNumero.setFont(new Font("Tahoma", Font.PLAIN, 30));
 		textNumero.setEditable(false);
-		contentPane.add(textNumero, "cell 0 0 5 1,grow");
+		contentPane.add(textNumero, "cell 0 0 5 1,alignx center,aligny center");
 		StyledDocument doc = textNumero.getStyledDocument();
 		SimpleAttributeSet center = new SimpleAttributeSet();
 		StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
 		doc.setParagraphAttributes(0, doc.getLength(), center, false);
 		
 		btn1 = new JButton("");
+		btn1.setMinimumSize(new Dimension(100, 9));
 		btn1.setBackground(SystemColor.activeCaption);
 		btn1.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		contentPane.add(btn1, "cell 0 1,grow");
 		
 		btn2 = new JButton("");
+		btn2.setMinimumSize(new Dimension(100, 9));
 		btn2.setBackground(SystemColor.activeCaption);
 		btn2.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		contentPane.add(btn2, "cell 1 1,grow");
 		
 		btn3 = new JButton("");
+		btn3.setMinimumSize(new Dimension(100, 9));
 		btn3.setBackground(SystemColor.activeCaption);
 		btn3.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		contentPane.add(btn3, "cell 2 1,grow");
 		
 		btn4 = new JButton("");
+		btn4.setMinimumSize(new Dimension(100, 9));
 		btn4.setBackground(SystemColor.activeCaption);
 		btn4.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		contentPane.add(btn4, "cell 3 1,grow");
 		
 		btn5 = new JButton("");
+		btn5.setMinimumSize(new Dimension(100, 9));
 		btn5.setBackground(SystemColor.activeCaption);
 		btn5.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		contentPane.add(btn5, "cell 4 1,grow");
 		
 		btn6 = new JButton("");
+		btn6.setMinimumSize(new Dimension(100, 9));
 		btn6.setBackground(SystemColor.activeCaption);
 		btn6.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		contentPane.add(btn6, "cell 0 2,grow");
 		
 		btn7 = new JButton("");
+		btn7.setMinimumSize(new Dimension(100, 9));
 		btn7.setBackground(SystemColor.activeCaption);
 		btn7.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		contentPane.add(btn7, "flowx,cell 1 2,grow");
 		
 		btn8 = new JButton("");
+		btn8.setMinimumSize(new Dimension(100, 9));
 		btn8.setBackground(SystemColor.activeCaption);
 		btn8.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		contentPane.add(btn8, "cell 2 2,grow");
 		
 		btn9 = new JButton("");
+		btn9.setMinimumSize(new Dimension(100, 9));
 		btn9.setBackground(SystemColor.activeCaption);
 		btn9.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		contentPane.add(btn9, "cell 3 2,grow");
 		
 		btn10 = new JButton("");
+		btn10.setMinimumSize(new Dimension(100, 9));
 		btn10.setBackground(SystemColor.activeCaption);
 		btn10.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		contentPane.add(btn10, "cell 4 2,grow");
@@ -188,34 +223,39 @@ public class Bingo extends JFrame {
 		btnLBingo.setEnabled(false);
 		
 		btn11 = new JButton("");
+		btn11.setMinimumSize(new Dimension(100, 9));
 		btn11.setBackground(SystemColor.activeCaption);
 		btn11.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		contentPane.add(btn11, "cell 0 3,grow");
 		
 		btn12 = new JButton("");
+		btn12.setMinimumSize(new Dimension(100, 9));
 		btn12.setBackground(SystemColor.activeCaption);
 		btn12.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		contentPane.add(btn12, "cell 1 3,grow");
 		
 		btn13 = new JButton("");
+		btn13.setMinimumSize(new Dimension(100, 9));
 		btn13.setBackground(SystemColor.activeCaption);
 		btn13.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		contentPane.add(btn13, "cell 2 3,grow");
 		
 		btn14 = new JButton("");
+		btn14.setMinimumSize(new Dimension(100, 9));
 		btn14.setBackground(SystemColor.activeCaption);
 		btn14.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		contentPane.add(btn14, "cell 3 3,grow");
 		
 		btn15 = new JButton("");
+		btn15.setMinimumSize(new Dimension(100, 9));
 		btn15.setBackground(SystemColor.activeCaption);
 		btn15.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		contentPane.add(btn15, "cell 4 3,grow");
 		
 		textAnterior = new JTextPane();
-		textAnterior.setBackground(new Color(255, 255, 255));
+		textAnterior.setBackground(SystemColor.control);
 		textAnterior.setEditable(false);
-		contentPane.add(textAnterior, "cell 5 0 2 1,grow");
+		contentPane.add(textAnterior, "cell 5 0 2 1,alignx center,aligny center");
 		StyledDocument doc2 = textAnterior.getStyledDocument();
 		SimpleAttributeSet center2 = new SimpleAttributeSet();
 		StyleConstants.setAlignment(center2, StyleConstants.ALIGN_CENTER);
@@ -233,37 +273,9 @@ public class Bingo extends JFrame {
 	// FIN DEL CONSTRUCTOR
 	
 	public void crearCarton() {	
-		int numero;
-		boolean esta = false;
-		for(int i=0;i<numerosCarton.length;i++) {
-			
-			numero = (int) (Math.random()*50+1);
-			for(int j=0;j<i;j++) {
-				if (numero == numerosCarton[j]) {
-					esta = true;
-				}
-			}
-			if (esta) {
-				i--;
-				esta = false;
-			}
-			else numerosCarton[i] = numero;
+		for (int i = 1; i<6;i++) {
+			generarNumeros(i);
 		}
-		
-		for (int x = 0; x < numerosCarton.length; x++) {
-	        // Aquí "y" se detiene antes de llegar
-	        // a length - 1 porque dentro del for, accedemos
-	        // al siguiente elemento con el índice actual + 1
-	        for (int y = 0; y < numerosCarton.length - 1; y++) {
-	            int elementoActual =numerosCarton[y],
-	                    elementoSiguiente = numerosCarton[y + 1];
-	            if (elementoActual > elementoSiguiente) {
-	                // Intercambiar
-	            	numerosCarton[y] = elementoSiguiente;
-	            	numerosCarton[y + 1] = elementoActual;
-	            }
-	        }
-	    }
 		
 		for(int i=0;i<numerosCarton.length;i++) {
 			arrayBotones[i].setText("<html><center>" + respuestas[numerosCarton[i]-1] + "<br>" + numerosCarton[i] + "</html>");
@@ -276,11 +288,42 @@ public class Bingo extends JFrame {
 		cantoLinea = false;
 	}
 	
+	public void generarNumeros(int columna) {
+		int numero;
+		columna = columna -1;
+		boolean esta = false;
+		for(int i=0;i<3;i++) {		
+			numero = (int) (Math.random()*10+(columna*10+1));
+			for(int j=0;j<i;j++) {
+				if (numero == numerosCarton[columna+(j*5)]) {
+					esta = true;
+				}
+			}
+			if (esta) {
+				i--;
+				esta = false;
+			}
+			else numerosCarton[columna+(i*5)] = numero;	
+		}
+		for (int x = 0; x < 3; x++) {
+	        for (int y = 0; y < 2; y++) {
+	            int elementoActual = numerosCarton[columna+(y*5)],
+	            elementoSiguiente = numerosCarton[(columna+(y*5)) + 5];
+	            if (elementoActual > elementoSiguiente) {
+	            	numerosCarton[columna+(y*5)] = elementoSiguiente;
+	            	numerosCarton[(columna+(y*5)) + 5] = elementoActual;
+	            }
+	        }
+	    }
+	}
 	
 	public void tengoLinea(){
-		for (int i=0;i<11;i+=5) {
-			if (arrayBotones[i].getBackground()==Color.GREEN && arrayBotones[i+1].getBackground()==Color.GREEN && arrayBotones[i+2].getBackground()==Color.GREEN && arrayBotones[i+3].getBackground()==Color.GREEN && arrayBotones[i+4].getBackground()==Color.GREEN) {
-				btnLinea.setEnabled(true);
+		if (penalizacion == 0) {
+			for (int i=0;i<11;i+=5) {
+				if (arrayBotones[i].getBackground()==Color.GREEN && arrayBotones[i+1].getBackground()==Color.GREEN && arrayBotones[i+2].getBackground()==Color.GREEN && arrayBotones[i+3].getBackground()==Color.GREEN && arrayBotones[i+4].getBackground()==Color.GREEN) {
+					btnLinea.setEnabled(true);
+					preguntaLinea = ((int) (Math.random()*5)) + i;
+				}
 			}
 		}
 	}
@@ -290,9 +333,13 @@ public class Bingo extends JFrame {
 		for (int i=0;i<arrayBotones.length;i++) {
 			if (arrayBotones[i].getBackground()!=Color.GREEN) tengo = false;
 		}
-		if(tengo) btnLBingo.setEnabled(true);
+		if(tengo) {
+			btnLBingo.setEnabled(true);
+			preguntaBingo = (int) (Math.random()*15);
+		}
 	}
-	private void comprobarBotones(int bola) {
+	
+	private void comprobarBotones(int bola) {	
 		for (int i = 0;i<numerosCarton.length;i++) {
 			if (numerosCarton[i] == bola) {
 				arrayBotones[i].setEnabled(true);
@@ -352,7 +399,10 @@ public class Bingo extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-		    	if (anterior!=0 && bola!=anterior) textAnterior.setText((anterior) + " - " + respuestas[anterior-1] + "");
+		    	if (anterior!=0 && bola!=anterior) {
+		    		textAnterior.setText((anterior) + "\r\n" + respuestas[anterior-1] + "");
+		    		if (penalizacion > 0) penalizacion--;
+		    	}
 		    	try {
 		    		anterior = bola;
 		    		bola = Integer.parseInt(scArchivo.readLine());	
@@ -414,6 +464,7 @@ public class Bingo extends JFrame {
 				//If a string was returned, say so.
 				if ((s != null) && (s.length() > 0)) {
 					setTitle("FOLINGO - " + s);
+					usuario = s;
 					try {
 						fwArchivoUsers = new FileWriter(ficheroUsers,true);
 						fwArchivoUsers.write(""+ s +"\n");
@@ -454,26 +505,53 @@ public class Bingo extends JFrame {
 				timer.stop();
 				try {
 					fwArchivoControl = new FileWriter(ficheroControl,true);
-					fwArchivoControl.write("1\n");
+					fwArchivoControl.write("1\n" + usuario + "\n" + (numerosCarton[preguntaLinea]-1) + "\n");
 					fwArchivoControl.close();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				}	
-				JOptionPane.showConfirmDialog(null, "Enhorabuena has hecho linea.",
-	                    "LINEA", JOptionPane.CLOSED_OPTION,
-	                    JOptionPane.INFORMATION_MESSAGE);
-				try {
-					fwArchivoControl = new FileWriter(ficheroControl,true);
-					fwArchivoControl.write("2\n");
-					fwArchivoControl.close();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}	
-				timer.start();
+				}
 				btnLinea.setEnabled(false);
-				cantoLinea = true;
+				System.out.println(respuestas[numerosCarton[preguntaLinea]-1].replace(" ", ""));
+				String s = (String)JOptionPane.showInputDialog(
+	                    null,
+	                    preguntas[numerosCarton[preguntaLinea]-1],
+	                    "Responde para acertar la Linea",
+	                    JOptionPane.PLAIN_MESSAGE,
+	                    null,
+	                    null,
+	                    "");
+				if ((s != null) && (s.length() > 0)) {
+					if (s.replace(" ", "").equalsIgnoreCase(respuestas[numerosCarton[preguntaLinea]-1].replace(" ", ""))) {
+						try {
+							fwArchivoControl = new FileWriter(ficheroControl,true);
+							fwArchivoControl.write("2\n");
+							fwArchivoControl.close();
+							textNumero.setText("LINEA CORRECTA");
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}	
+						timer.start();
+						cantoLinea = true;
+					} else {
+						try {
+							fwArchivoControl = new FileWriter(ficheroControl,true);
+							fwArchivoControl.write("0\n");
+							fwArchivoControl.close();
+							textNumero.setText("Lo Sentimos, la linea no es correcta.");
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}	
+						timer.start();	
+						penalizacion = 3;
+					}
+				}
+				/*JOptionPane.showConfirmDialog(null, "Enhorabuena has hecho linea.",
+	                    "LINEA", JOptionPane.CLOSED_OPTION,
+	                    JOptionPane.INFORMATION_MESSAGE);*/
+				
 			}
 		});
 		
@@ -485,25 +563,49 @@ public class Bingo extends JFrame {
 				//DESACTIVAR EL PROPIO NUEVA PARTIDA
 				try {
 					fwArchivoControl = new FileWriter(ficheroControl,true);
-					fwArchivoControl.write("3\n");
-					fwArchivoControl.close();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}	
-				JOptionPane.showConfirmDialog(null, "Enhorabuena has hecho linea.",
-	                    "LINEA", JOptionPane.CLOSED_OPTION,
-	                    JOptionPane.INFORMATION_MESSAGE);
-				try {
-					fwArchivoControl = new FileWriter(ficheroControl,true);
-					fwArchivoControl.write("4\n");
+					fwArchivoControl.write("3\n" + usuario + "\n" + (numerosCarton[preguntaBingo]-1) + "\n");
 					fwArchivoControl.close();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				btnLBingo.setEnabled(false);
-				btnJugar.setEnabled(true);
+				System.out.println(respuestas[numerosCarton[preguntaLinea]-1].replace(" ", ""));
+				String s = (String)JOptionPane.showInputDialog(
+	                    null,
+	                    preguntas[numerosCarton[preguntaBingo]-1],
+	                    "Responde para acertar el Folingo",
+	                    JOptionPane.PLAIN_MESSAGE,
+	                    null,
+	                    null,
+	                    "");
+				if ((s != null) && (s.length() > 0)) {
+					if (s.replace(" ", "").equalsIgnoreCase(respuestas[numerosCarton[preguntaBingo]-1].replace(" ", ""))) {
+						try {
+							fwArchivoControl = new FileWriter(ficheroControl,true);
+							fwArchivoControl.write("4\n"+usuario+"\n");
+							fwArchivoControl.close();
+							textNumero.setText("HAS CANTADO FOLINGO");
+							btnJugar.setEnabled(true);
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}	
+					} else {
+						try {
+							fwArchivoControl = new FileWriter(ficheroControl,true);
+							fwArchivoControl.write("0\n");
+							fwArchivoControl.close();
+							textNumero.setText("Lo Sentimos, el Folingo no es correcto.");
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}	
+						penalizacion = 3;
+						timer.start();
+					}
+				}
+				
 			}
 		});
 		

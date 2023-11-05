@@ -18,10 +18,13 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.Scanner;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
@@ -29,6 +32,21 @@ import javax.swing.SwingConstants;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
+import javax.swing.border.LineBorder;
+import net.miginfocom.swing.MigLayout;
+import java.awt.Component;
+import java.awt.Desktop;
+
+import javax.swing.JTextField;
+import javax.swing.JTextArea;
+import javax.swing.JTextPane;
+import java.awt.SystemColor;
+import javax.swing.JScrollPane;
+
 
 public class BingoLocutor extends JFrame {
 
@@ -40,7 +58,7 @@ public class BingoLocutor extends JFrame {
 	private JButton btnBola;
 	private JButton btnComenzar;
 	private JButton btnSalir;
-	private JLabel lblBola;
+	private JTextPane lblBola;
 	private String[] preguntas = new String[50];
 	private String[] respuestas = new String[50];
 	private boolean[] haSalido = new boolean[50];
@@ -48,15 +66,22 @@ public class BingoLocutor extends JFrame {
 	private int numBolas = 0;
 	private Timer timer;
 	private Timer timerControl;
+	private Timer timerUsers;
+	private int contUsers = 0;
 	private boolean cantoLinea = false;
 	private File ficheroBolas = new File("data/bolas.txt");
 	private BufferedWriter fwBolas;
 	private FileWriter fwControl;
 	private BufferedReader scFicheroControl;
+	private Scanner scUsers;
 	private File ficheroControl = new File("data/control.txt");
+	private File ficheroUsers = new File("data/users.txt");
+	private File ficheroPreguntas = new File("data/Preguntas.txt");
 	private boolean auto = false;
-	private JLabel lblAnterior;
 	private int bola = 0;
+	private String historial;
+	private JScrollPane scrollPane;
+	private JTextPane lblAnterior;
 	/**
 	 * Launch the application.
 	 */
@@ -79,66 +104,74 @@ public class BingoLocutor extends JFrame {
 	public BingoLocutor() {
 		setTitle("FOLINGO");
 		UIManager.put("textInactiveText", new ColorUIResource(Color.BLACK));
-		for (int i=0;i<preguntas.length;i++) {
-			preguntas[i] = "";
+		try {
+			Scanner sc;
+			sc = new Scanner(new InputStreamReader(new FileInputStream(ficheroPreguntas), "UTF-8"));
+			int numPreguntas = 0;
+			while (sc.hasNext()) {	
+				preguntas[numPreguntas] = sc.nextLine();
+				respuestas[numPreguntas] = sc.nextLine(); 
+				numPreguntas++;
+				if (numPreguntas==50) break;
+			}
+			sc.close();
+		} catch (UnsupportedEncodingException e) {
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		for (int i=0;i<respuestas.length;i++) {
-			respuestas[i] = "";
-		}
-		for (int i=0;i<haSalido.length;i++) {
-			haSalido[i] = false;
-		}
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 847, 491);
+		setBounds(100, 100, 870, 491);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
 		
-		lblBola = new JLabel("Empezando la partida.");
-		lblBola.setBounds(10, 14, 613, 427);
-		lblBola.setHorizontalAlignment(SwingConstants.CENTER);
+		lblBola = new JTextPane();
+		lblBola.setBackground(SystemColor.control);
+		lblBola.setText("BIENVENIDO A FOLINGO");
+		lblBola.setEditable(false);
 		lblBola.setFont(new Font("Tahoma", Font.PLAIN, 40));
+		StyledDocument doc = lblBola.getStyledDocument();
+		SimpleAttributeSet center = new SimpleAttributeSet();
+		StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+		doc.setParagraphAttributes(0, doc.getLength(), center, false);
 		
 		btnComenzar = new JButton("Empezar");
-		btnComenzar.setBounds(633, 377, 89, 64);
 		
 		btnSalir = new JButton("Salir");
-		btnSalir.setBounds(732, 377, 89, 64);
-		
-		lblAnterior = new JLabel("New label");
-		lblAnterior.setBounds(633, 14, 188, 197);
-		lblAnterior.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		btnBola = new JButton("Sacar Bola");
-		btnBola.setBounds(633, 301, 89, 64);
 		btnBola.setEnabled(false);
 		
-		btnHistorial = new JButton("Historial");
-		btnHistorial.setBounds(732, 301, 89, 64);
+		btnHistorial = new JButton("Preguntas");
 		btnHistorial.setEnabled(false);
 		
 		btnAuto = new JButton("Auto");
-		btnAuto.setBounds(633, 225, 89, 64);
 		btnAuto.setEnabled(false);
 		
 		btnParar = new JButton("Parar");
-		btnParar.setBounds(732, 225, 89, 64);
 		btnParar.setEnabled(false);
-		contentPane.setLayout(null);
-		contentPane.add(lblBola);
-		contentPane.add(lblAnterior);
-		contentPane.add(btnAuto);
-		contentPane.add(btnParar);
-		contentPane.add(btnBola);
-		contentPane.add(btnHistorial);
-		contentPane.add(btnComenzar);
-		contentPane.add(btnSalir);
+		contentPane.setLayout(new MigLayout("", "[613px,grow][89px][10px][89px]", "[197px,grow][1px][64px][1px][64px][1px][64px]"));
+		contentPane.add(lblBola, "cell 0 0 1 7,alignx center,aligny center");
 		
-		JTable table = new JTable();
-		table.setEnabled(false);
-		table.setBounds(10, 14, 613, 427);
-		contentPane.add(table);
+		scrollPane = new JScrollPane();
+		scrollPane.setAutoscrolls(true);
+		contentPane.add(scrollPane, "cell 1 0 3 1,grow");
+		
+		
+		lblAnterior = new JTextPane();
+		lblAnterior.setEditable(false);
+		lblAnterior.setBackground(SystemColor.control);
+		scrollPane.setViewportView(lblAnterior);
+		contentPane.add(btnAuto, "cell 1 2,grow");
+		contentPane.add(btnParar, "cell 3 2,grow");
+		contentPane.add(btnBola, "cell 1 4,grow");
+		contentPane.add(btnHistorial, "cell 3 4,grow");
+		contentPane.add(btnComenzar, "cell 1 6,grow");
+		contentPane.add(btnSalir, "cell 3 6,grow");
 		try {
 			fwBolas = new BufferedWriter(new FileWriter(ficheroBolas,true));
 			try {
@@ -156,13 +189,14 @@ public class BingoLocutor extends JFrame {
 	
 	public void sacarBola() {
 		if (numBolas==50) {
-        	timer.stop();
         	lblBola.setText("No ha habido ningun ganador :(");
+        	timer.stop();
+        	timerControl.stop();
         	btnComenzar.setEnabled(true);
         	btnBola.setEnabled(false);
         	btnAuto.setEnabled(false);
         	btnParar.setEnabled(false);
-    		timerControl.stop();
+        	numBolas = 0;
     		try {
 				fwControl = new FileWriter(ficheroControl,true);
 				fwControl.write("4\n");
@@ -173,11 +207,18 @@ public class BingoLocutor extends JFrame {
 			}
         	return;
         }
-		if (bola!=0) lblAnterior.setText((bola) + " - " + respuestas[bola-1] + "");
+		if (bola!=0) {
+			lblAnterior.setText(historial + "\n" + (bola) + " - " + respuestas[bola-1] + "" + lblAnterior.getText().substring(19));
+			javax.swing.SwingUtilities.invokeLater(new Runnable() {
+				   public void run() { 
+				       scrollPane.getVerticalScrollBar().setValue(0);
+				   }
+				});
+		}
         do {
         	bola = ((int) (Math.random()*50+1));
         } while (haSalido[bola-1]);
-        lblBola.setText("" + preguntas[bola-1] + "\r\n" + (bola) + " - " + respuestas[bola-1] + "");
+        lblBola.setText("" + preguntas[bola-1] + "\r\n\r\nBola nº" + (bola) + " -- " + respuestas[bola-1] + "");
         haSalido[bola-1] = true;
         try {
 			fwBolas.write("\r\n"+bola);
@@ -204,11 +245,15 @@ public class BingoLocutor extends JFrame {
 		    public void actionPerformed(ActionEvent e)
 		    {
 		    	int control;
+		    	
 		    	try {
 		    		control = Integer.parseInt(scFicheroControl.readLine());
 			    	if (control == 1) {
 			    		timer.stop();
 			    		lblBola.setText("Alguien ha cantado linea.");
+			    		String usuario = scFicheroControl.readLine();
+			    		int pregunta = Integer.parseInt(scFicheroControl.readLine());
+			    		lblBola.setText("Comprobando Linea de "+ usuario + "\r\n"+preguntas[pregunta]);
 			    		btnBola.setEnabled(false);
 			    		btnAuto.setEnabled(false);
 			    	} else if(control == 2) {
@@ -218,11 +263,15 @@ public class BingoLocutor extends JFrame {
 			    		lblBola.setText("Enhorabuena, la Linea es Correcta.");
 			    	} else if(control == 3) {
 			    		timer.stop();
-			    		lblBola.setText("Alguien ha cantado bingo.");
+			    		lblBola.setText("Alguien ha cantado Folingo.");
+			    		String usuario = scFicheroControl.readLine();
+			    		int pregunta = Integer.parseInt(scFicheroControl.readLine());
+			    		lblBola.setText("Comprobando Folingo de "+ usuario + "\r\n"+preguntas[pregunta]);
 			    		btnBola.setEnabled(false);
 			    		btnAuto.setEnabled(false);
 			    	} else if(control == 4) {
-			    		lblBola.setText("El ganador ha sido X Jugador");
+			    		String usuario = scFicheroControl.readLine();
+			    		lblBola.setText("El ganador ha sido " + usuario + "");
 			    		timer.stop();
 			    		timerControl.stop();
 			    		btnComenzar.setEnabled(true);
@@ -244,6 +293,36 @@ public class BingoLocutor extends JFrame {
 					e1.printStackTrace();
 				}
 		     }
+		});
+		
+		timerUsers = new Timer (500, new ActionListener ()
+		{
+		    public void actionPerformed(ActionEvent e)
+		    {
+		    	contUsers=0;
+		    	try {
+					scUsers =  new Scanner(ficheroUsers);
+					String usuarios = "Partida Creada\r\n"
+							+ "Jugadores:\r\n";
+					while (scUsers.hasNext()) {
+						if (contUsers == 3) {
+							usuarios = usuarios + "\r\n";
+							contUsers = -1;
+						}
+						usuarios = usuarios + scUsers.next() + "      ";
+						contUsers++;
+					}
+					
+					lblBola.setText(usuarios);
+					scUsers.close();
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+		    	
+		    	
+		    }
+		    
 		});
 	//REGISTRAR LOS EVENTOS actionPerformed PARA LOS 9 BOTONES
 			/*for (int i = 0; i < arrayBotones.length; i++) {
@@ -267,6 +346,7 @@ public class BingoLocutor extends JFrame {
 					try {
 						new FileWriter(ficheroBolas, false).close();
 						new FileWriter(ficheroControl, false).close();
+						new FileWriter(ficheroUsers, false).close();
 						fwControl = new FileWriter(ficheroControl,true);
 						fwControl.write("0\n");
 						fwControl.close();
@@ -274,9 +354,11 @@ public class BingoLocutor extends JFrame {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+					for(int i=0;i<haSalido.length;i++) haSalido[i]=false;
+					timerUsers.start();
 					//DESACTIVAR EL PROPIO NUEVA PARTIDA
-					lblBola.setText("Sala Creada\nEsperando Jugadores.");
-					lblAnterior.setText("");
+					lblAnterior.setText("Historial de Bolas:");
+					historial = "Historial de Bolas:";
 					bola = 0;
 					numBolas = 0;
 					btnComenzar.setEnabled(false);
@@ -303,11 +385,12 @@ public class BingoLocutor extends JFrame {
 					}
 				}
 			});
+			
 			btnBola.addActionListener(new ActionListener() {
-
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					//SALIR DEL PROGRAMA PIDIENDO CONFIRMACIÓN
+					if (timerUsers.isRunning()) timerUsers.stop();
 					sacarBola();
 				}
 			});
@@ -318,10 +401,29 @@ public class BingoLocutor extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					//SALIR DEL PROGRAMA PIDIENDO CONFIRMACIÓN
 					timer.start();
+					if (timerUsers.isRunning()) timerUsers.stop();
 					auto = true;
 					btnAuto.setEnabled(false);
 					btnParar.setEnabled(true);
 					btnBola.setEnabled(false);
+				}
+			});
+			
+			btnHistorial.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					try {
+
+			            File objetofile = new File ("data/Preguntas.docx");
+			            Desktop.getDesktop().open(objetofile);
+
+			     }catch (IOException ex) {
+
+			            System.out.println(ex);
+
+			     }
 				}
 			});
 			
