@@ -279,6 +279,12 @@ public class BingoLocutor extends JFrame {
 						btnBola.setEnabled(false);
 						btnHistorial.setEnabled(false);
 						btnParar.setEnabled(false);
+			    	}
+			    	else if(control == 5) {
+			    		fwControl = new FileWriter(ficheroControl,true);
+						fwControl.write("0\n");
+						fwControl.close();
+			    		lblBola.setText("Lo sentimos, la linea no es correcta.");
 			    	} else {
 			    		if (auto) timer.start();
 			    		else {
@@ -376,6 +382,7 @@ public class BingoLocutor extends JFrame {
 					if(JOptionPane.showConfirmDialog(BingoLocutor.this, "¿Seguro que quieres salir?", "Aviso",
 							JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
 						try {
+							fwBolas.write("n");
 							fwBolas.close();
 						} catch (IOException e1) {
 							// TODO Auto-generated catch block
@@ -385,6 +392,22 @@ public class BingoLocutor extends JFrame {
 					}
 				}
 			});
+			
+			this.addWindowListener(new java.awt.event.WindowAdapter() {
+				@Override
+				public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+					if(JOptionPane.showConfirmDialog(BingoLocutor.this, "¿Seguro que quieres salir?", "Aviso",
+							JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
+						try {
+							fwBolas.write("n");
+							fwBolas.close();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						System.exit(0);
+					}
+				}});
 			
 			btnBola.addActionListener(new ActionListener() {
 				@Override
@@ -439,6 +462,8 @@ public class BingoLocutor extends JFrame {
 					btnBola.setEnabled(true);
 				}
 			});
+			
+
 			
 		}//FIN DE REGISTRAR EVENTOS
 }

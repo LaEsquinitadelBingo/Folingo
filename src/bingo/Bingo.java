@@ -16,6 +16,7 @@ import javax.swing.text.StyledDocument;
 import java.awt.GridLayout;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
@@ -75,12 +76,12 @@ public class Bingo extends JFrame {
 	private boolean cantoLinea = false;
 	private BufferedReader scArchivo;
 	private BufferedReader scArchivoControl;
-	private File fichero = new File("data/bolas.txt");
+	private File fichero;
 	private FileWriter fwArchivoControl;
-	private File ficheroControl = new File("data/control.txt");
+	private File ficheroControl;
 	private FileWriter fwArchivoUsers;
-	private File ficheroUsers = new File("data/users.txt");
-	private File ficheroPreguntas = new File("data/Preguntas.txt");
+	private File ficheroUsers;
+	private File ficheroPreguntas;
 	private int bola=0;
 	private int anterior = 0;
 	private JButton btn14;
@@ -117,6 +118,149 @@ public class Bingo extends JFrame {
 	public Bingo() {
 		setTitle("FOLINGO");
 		UIManager.put("textInactiveText", new ColorUIResource(Color.BLACK));
+
+
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 691, 383);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
+		contentPane.setLayout(new MigLayout("", "[89px,grow][89px,grow][89px,grow][89px,grow][89px,grow][89px,grow][89px,grow]", "[120px,grow][64px,grow][62px,grow][64px,grow]"));
+		
+		textNumero = new JTextPane();
+		textNumero.setBackground(SystemColor.control);
+		textNumero.setFont(new Font("Tahoma", Font.PLAIN, 45));
+		textNumero.setEditable(false);
+		contentPane.add(textNumero, "cell 0 0 5 1,alignx center,aligny center");
+		StyledDocument doc = textNumero.getStyledDocument();
+		SimpleAttributeSet center = new SimpleAttributeSet();
+		StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+		doc.setParagraphAttributes(0, doc.getLength(), center, false);
+		
+		btn1 = new JButton("");
+		btn1.setMinimumSize(new Dimension(100, 9));
+		btn1.setBackground(SystemColor.activeCaption);
+		btn1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		contentPane.add(btn1, "cell 0 1,grow");
+		
+		btn2 = new JButton("");
+		btn2.setMinimumSize(new Dimension(100, 9));
+		btn2.setBackground(SystemColor.activeCaption);
+		btn2.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		contentPane.add(btn2, "cell 1 1,grow");
+		
+		btn3 = new JButton("");
+		btn3.setMinimumSize(new Dimension(100, 9));
+		btn3.setBackground(SystemColor.activeCaption);
+		btn3.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		contentPane.add(btn3, "cell 2 1,grow");
+		
+		btn4 = new JButton("");
+		btn4.setMinimumSize(new Dimension(100, 9));
+		btn4.setBackground(SystemColor.activeCaption);
+		btn4.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		contentPane.add(btn4, "cell 3 1,grow");
+		
+		btn5 = new JButton("");
+		btn5.setMinimumSize(new Dimension(100, 9));
+		btn5.setBackground(SystemColor.activeCaption);
+		btn5.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		contentPane.add(btn5, "cell 4 1,grow");
+		
+		btn6 = new JButton("");
+		btn6.setMinimumSize(new Dimension(100, 9));
+		btn6.setBackground(SystemColor.activeCaption);
+		btn6.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		contentPane.add(btn6, "cell 0 2,grow");
+		
+		btn7 = new JButton("");
+		btn7.setMinimumSize(new Dimension(100, 9));
+		btn7.setBackground(SystemColor.activeCaption);
+		btn7.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		contentPane.add(btn7, "flowx,cell 1 2,grow");
+		
+		btn8 = new JButton("");
+		btn8.setMinimumSize(new Dimension(100, 9));
+		btn8.setBackground(SystemColor.activeCaption);
+		btn8.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		contentPane.add(btn8, "cell 2 2,grow");
+		
+		btn9 = new JButton("");
+		btn9.setMinimumSize(new Dimension(100, 9));
+		btn9.setBackground(SystemColor.activeCaption);
+		btn9.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		contentPane.add(btn9, "cell 3 2,grow");
+		
+		btn10 = new JButton("");
+		btn10.setMinimumSize(new Dimension(100, 9));
+		btn10.setBackground(SystemColor.activeCaption);
+		btn10.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		contentPane.add(btn10, "cell 4 2,grow");
+		
+		btnLBingo = new JButton("FOLINGO");
+		contentPane.add(btnLBingo, "cell 6 2,grow");
+		btnLBingo.setEnabled(false);
+		
+		btn11 = new JButton("");
+		btn11.setMinimumSize(new Dimension(100, 9));
+		btn11.setBackground(SystemColor.activeCaption);
+		btn11.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		contentPane.add(btn11, "cell 0 3,grow");
+		
+		btn12 = new JButton("");
+		btn12.setMinimumSize(new Dimension(100, 9));
+		btn12.setBackground(SystemColor.activeCaption);
+		btn12.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		contentPane.add(btn12, "cell 1 3,grow");
+		
+		btn13 = new JButton("");
+		btn13.setMinimumSize(new Dimension(100, 9));
+		btn13.setBackground(SystemColor.activeCaption);
+		btn13.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		contentPane.add(btn13, "cell 2 3,grow");
+		
+		btn14 = new JButton("");
+		btn14.setMinimumSize(new Dimension(100, 9));
+		btn14.setBackground(SystemColor.activeCaption);
+		btn14.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		contentPane.add(btn14, "cell 3 3,grow");
+		
+		btn15 = new JButton("");
+		btn15.setMinimumSize(new Dimension(100, 9));
+		btn15.setBackground(SystemColor.activeCaption);
+		btn15.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		contentPane.add(btn15, "cell 4 3,grow");
+		
+		textAnterior = new JTextPane();
+		textAnterior.setBackground(SystemColor.control);
+		textAnterior.setEditable(false);
+		contentPane.add(textAnterior, "cell 5 0 2 1,alignx center,aligny center");
+		StyledDocument doc2 = textAnterior.getStyledDocument();
+		SimpleAttributeSet center2 = new SimpleAttributeSet();
+		StyleConstants.setAlignment(center2, StyleConstants.ALIGN_CENTER);
+		doc2.setParagraphAttributes(0, doc2.getLength(), center2, false);
+		
+		btnLinea = new JButton("LINEA");
+		contentPane.add(btnLinea, "cell 6 1,grow");
+		btnLinea.setEnabled(false);
+		
+		btnJugar = new JButton("JUGAR");
+		contentPane.add(btnJugar, "cell 6 3,grow");
+		crearArrayBotones();
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		fileChooser.setDialogTitle("Elige la carpeta compartida:");
+		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+		int result = fileChooser.showOpenDialog(this);
+		if (result == JFileChooser.APPROVE_OPTION) {
+		    File selectedFile = fileChooser.getSelectedFile();
+		    System.out.println("Selected file: " + selectedFile.getAbsolutePath().replace('\\', '/') + "/data/bolas.txt");
+		    fichero = new File(selectedFile.getAbsolutePath().replace('\\', '/')+"/data/bolas.txt");
+			ficheroControl = new File(selectedFile.getAbsolutePath().replace('\\', '/')+"/data/control.txt");
+			ficheroUsers = new File(selectedFile.getAbsolutePath().replace('\\', '/')+"/data/users.txt");
+			ficheroPreguntas = new File(selectedFile.getAbsolutePath().replace('\\', '/')+"/data/Preguntas.txt");
+		} else System.exit(1);
 		try {
 			Scanner sc;
 			try {
@@ -136,138 +280,11 @@ public class Bingo extends JFrame {
 			
 			
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			JOptionPane.showConfirmDialog(null, "La ruta no es valida",
+					"LINEA", JOptionPane.CLOSED_OPTION,
+					JOptionPane.INFORMATION_MESSAGE);
+			System.exit(1);
 		}
-
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 691, 383);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
-		setContentPane(contentPane);
-		contentPane.setLayout(new MigLayout("", "[89px,grow][89px,grow][89px,grow][89px,grow][89px,grow][89px,grow][89px,grow]", "[120px,grow][64px,grow][62px,grow][64px,grow]"));
-		
-		textNumero = new JTextPane();
-		textNumero.setBackground(SystemColor.control);
-		textNumero.setFont(new Font("Tahoma", Font.PLAIN, 30));
-		textNumero.setEditable(false);
-		contentPane.add(textNumero, "cell 0 0 5 1,alignx center,aligny center");
-		StyledDocument doc = textNumero.getStyledDocument();
-		SimpleAttributeSet center = new SimpleAttributeSet();
-		StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-		doc.setParagraphAttributes(0, doc.getLength(), center, false);
-		
-		btn1 = new JButton("");
-		btn1.setMinimumSize(new Dimension(100, 9));
-		btn1.setBackground(SystemColor.activeCaption);
-		btn1.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		contentPane.add(btn1, "cell 0 1,grow");
-		
-		btn2 = new JButton("");
-		btn2.setMinimumSize(new Dimension(100, 9));
-		btn2.setBackground(SystemColor.activeCaption);
-		btn2.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		contentPane.add(btn2, "cell 1 1,grow");
-		
-		btn3 = new JButton("");
-		btn3.setMinimumSize(new Dimension(100, 9));
-		btn3.setBackground(SystemColor.activeCaption);
-		btn3.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		contentPane.add(btn3, "cell 2 1,grow");
-		
-		btn4 = new JButton("");
-		btn4.setMinimumSize(new Dimension(100, 9));
-		btn4.setBackground(SystemColor.activeCaption);
-		btn4.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		contentPane.add(btn4, "cell 3 1,grow");
-		
-		btn5 = new JButton("");
-		btn5.setMinimumSize(new Dimension(100, 9));
-		btn5.setBackground(SystemColor.activeCaption);
-		btn5.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		contentPane.add(btn5, "cell 4 1,grow");
-		
-		btn6 = new JButton("");
-		btn6.setMinimumSize(new Dimension(100, 9));
-		btn6.setBackground(SystemColor.activeCaption);
-		btn6.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		contentPane.add(btn6, "cell 0 2,grow");
-		
-		btn7 = new JButton("");
-		btn7.setMinimumSize(new Dimension(100, 9));
-		btn7.setBackground(SystemColor.activeCaption);
-		btn7.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		contentPane.add(btn7, "flowx,cell 1 2,grow");
-		
-		btn8 = new JButton("");
-		btn8.setMinimumSize(new Dimension(100, 9));
-		btn8.setBackground(SystemColor.activeCaption);
-		btn8.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		contentPane.add(btn8, "cell 2 2,grow");
-		
-		btn9 = new JButton("");
-		btn9.setMinimumSize(new Dimension(100, 9));
-		btn9.setBackground(SystemColor.activeCaption);
-		btn9.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		contentPane.add(btn9, "cell 3 2,grow");
-		
-		btn10 = new JButton("");
-		btn10.setMinimumSize(new Dimension(100, 9));
-		btn10.setBackground(SystemColor.activeCaption);
-		btn10.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		contentPane.add(btn10, "cell 4 2,grow");
-		
-		btnLBingo = new JButton("FOLINGO");
-		contentPane.add(btnLBingo, "cell 6 2,grow");
-		btnLBingo.setEnabled(false);
-		
-		btn11 = new JButton("");
-		btn11.setMinimumSize(new Dimension(100, 9));
-		btn11.setBackground(SystemColor.activeCaption);
-		btn11.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		contentPane.add(btn11, "cell 0 3,grow");
-		
-		btn12 = new JButton("");
-		btn12.setMinimumSize(new Dimension(100, 9));
-		btn12.setBackground(SystemColor.activeCaption);
-		btn12.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		contentPane.add(btn12, "cell 1 3,grow");
-		
-		btn13 = new JButton("");
-		btn13.setMinimumSize(new Dimension(100, 9));
-		btn13.setBackground(SystemColor.activeCaption);
-		btn13.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		contentPane.add(btn13, "cell 2 3,grow");
-		
-		btn14 = new JButton("");
-		btn14.setMinimumSize(new Dimension(100, 9));
-		btn14.setBackground(SystemColor.activeCaption);
-		btn14.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		contentPane.add(btn14, "cell 3 3,grow");
-		
-		btn15 = new JButton("");
-		btn15.setMinimumSize(new Dimension(100, 9));
-		btn15.setBackground(SystemColor.activeCaption);
-		btn15.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		contentPane.add(btn15, "cell 4 3,grow");
-		
-		textAnterior = new JTextPane();
-		textAnterior.setBackground(SystemColor.control);
-		textAnterior.setEditable(false);
-		contentPane.add(textAnterior, "cell 5 0 2 1,alignx center,aligny center");
-		StyledDocument doc2 = textAnterior.getStyledDocument();
-		SimpleAttributeSet center2 = new SimpleAttributeSet();
-		StyleConstants.setAlignment(center2, StyleConstants.ALIGN_CENTER);
-		doc2.setParagraphAttributes(0, doc2.getLength(), center2, false);
-		
-		btnLinea = new JButton("LINEA");
-		contentPane.add(btnLinea, "cell 6 1,grow");
-		btnLinea.setEnabled(false);
-		
-		btnJugar = new JButton("JUGAR");
-		contentPane.add(btnJugar, "cell 6 3,grow");
-		crearArrayBotones();
 		registrarEventos();
 	}
 	// FIN DEL CONSTRUCTOR
@@ -278,7 +295,7 @@ public class Bingo extends JFrame {
 		}
 		
 		for(int i=0;i<numerosCarton.length;i++) {
-			arrayBotones[i].setText("<html><center>" + respuestas[numerosCarton[i]-1] + "<br>" + numerosCarton[i] + "</html>");
+			arrayBotones[i].setText("<html><center>" + numerosCarton[i] + "</html>");
 			arrayBotones[i].setEnabled(false);
 			arrayBotones[i].setBackground(null);
 
@@ -315,6 +332,28 @@ public class Bingo extends JFrame {
 	            }
 	        }
 	    }
+	}
+	
+	public boolean estaNombre(String nombre) {
+		try {
+			Scanner sc;
+			String comprobar;
+			try {
+				sc = new Scanner(new InputStreamReader(new FileInputStream(ficheroUsers), "UTF-8"));
+				while (sc.hasNext()) {	
+					comprobar = sc.nextLine();
+					if (comprobar.equalsIgnoreCase(nombre)) return true;
+				}
+				sc.close();
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}	
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 	public void tengoLinea(){
@@ -406,7 +445,7 @@ public class Bingo extends JFrame {
 		    	try {
 		    		anterior = bola;
 		    		bola = Integer.parseInt(scArchivo.readLine());	
-			    	textNumero.setText("" + preguntas[bola-1] + "\r\n" + (bola) + " - " + respuestas[bola-1] + "");
+			    	textNumero.setText("" + (bola) + "");
 			    	if (bola!=anterior) {
 			    		parpadeo.stop();
 			    		botonParpadeando=null;
@@ -462,7 +501,7 @@ public class Bingo extends JFrame {
 	                    "");
 
 				//If a string was returned, say so.
-				if ((s != null) && (s.length() > 0)) {
+				if ((s != null) && (s.length() > 0) && !estaNombre(s)) {
 					setTitle("FOLINGO - " + s);
 					usuario = s;
 					try {
@@ -472,6 +511,7 @@ public class Bingo extends JFrame {
 						scArchivoControl = new BufferedReader(new FileReader("data/control.txt"));
 						scArchivo= new BufferedReader(new FileReader("data/bolas.txt"));
 						if (scArchivo.readLine()==null) {
+
 							timer.start();
 							textNumero.setText("Esperando Inicio del Bingo");
 							//DESACTIVAR EL PROPIO NUEVA PARTIDA
@@ -537,7 +577,7 @@ public class Bingo extends JFrame {
 					} else {
 						try {
 							fwArchivoControl = new FileWriter(ficheroControl,true);
-							fwArchivoControl.write("0\n");
+							fwArchivoControl.write("5\n");
 							fwArchivoControl.close();
 							textNumero.setText("Lo Sentimos, la linea no es correcta.");
 						} catch (IOException e1) {
