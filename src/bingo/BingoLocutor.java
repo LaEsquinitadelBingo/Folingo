@@ -24,6 +24,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.util.Scanner;
 import java.awt.event.ActionEvent;
@@ -285,7 +286,13 @@ public class BingoLocutor extends JFrame {
 						fwControl.write("0\n");
 						fwControl.close();
 			    		lblBola.setText("Lo sentimos, la linea no es correcta.");
-			    	} else {
+			    	} else if(control == 6) {
+			    		fwControl = new FileWriter(ficheroControl,true);
+						fwControl.write("0\n");
+						fwControl.close();
+			    		lblBola.setText("Lo sentimos, el Bingo no es correcta.");
+			    	}
+			    	else {
 			    		if (auto) timer.start();
 			    		else {
 			    			btnBola.setEnabled(true);
@@ -350,9 +357,16 @@ public class BingoLocutor extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					timerControl.start();
 					try {
-						new FileWriter(ficheroBolas, false).close();
-						new FileWriter(ficheroControl, false).close();
-						new FileWriter(ficheroUsers, false).close();
+							
+						RandomAccessFile raf = new RandomAccessFile(ficheroUsers, "rw");
+						raf.setLength(0); // Esto borra el contenido del archivo
+						raf.close();
+						 raf = new RandomAccessFile(ficheroBolas, "rw");
+						raf.setLength(0); // Esto borra el contenido del archivo
+						raf.close();
+						raf = new RandomAccessFile(ficheroControl, "rw");
+						raf.setLength(0); // Esto borra el contenido del archivo
+						raf.close();
 						fwControl = new FileWriter(ficheroControl,true);
 						fwControl.write("0\n");
 						fwControl.close();

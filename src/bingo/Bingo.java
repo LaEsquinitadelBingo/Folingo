@@ -139,60 +139,70 @@ public class Bingo extends JFrame {
 		doc.setParagraphAttributes(0, doc.getLength(), center, false);
 		
 		btn1 = new JButton("");
+		btn1.setFocusable(false);
 		btn1.setMinimumSize(new Dimension(100, 9));
 		btn1.setBackground(SystemColor.activeCaption);
 		btn1.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		contentPane.add(btn1, "cell 0 1,grow");
 		
 		btn2 = new JButton("");
+		btn2.setFocusable(false);
 		btn2.setMinimumSize(new Dimension(100, 9));
 		btn2.setBackground(SystemColor.activeCaption);
 		btn2.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		contentPane.add(btn2, "cell 1 1,grow");
 		
 		btn3 = new JButton("");
+		btn3.setFocusable(false);
 		btn3.setMinimumSize(new Dimension(100, 9));
 		btn3.setBackground(SystemColor.activeCaption);
 		btn3.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		contentPane.add(btn3, "cell 2 1,grow");
 		
 		btn4 = new JButton("");
+		btn4.setFocusable(false);
 		btn4.setMinimumSize(new Dimension(100, 9));
 		btn4.setBackground(SystemColor.activeCaption);
 		btn4.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		contentPane.add(btn4, "cell 3 1,grow");
 		
 		btn5 = new JButton("");
+		btn5.setFocusable(false);
 		btn5.setMinimumSize(new Dimension(100, 9));
 		btn5.setBackground(SystemColor.activeCaption);
 		btn5.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		contentPane.add(btn5, "cell 4 1,grow");
 		
 		btn6 = new JButton("");
+		btn6.setFocusable(false);
 		btn6.setMinimumSize(new Dimension(100, 9));
 		btn6.setBackground(SystemColor.activeCaption);
 		btn6.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		contentPane.add(btn6, "cell 0 2,grow");
 		
 		btn7 = new JButton("");
+		btn7.setFocusable(false);
 		btn7.setMinimumSize(new Dimension(100, 9));
 		btn7.setBackground(SystemColor.activeCaption);
 		btn7.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		contentPane.add(btn7, "flowx,cell 1 2,grow");
 		
 		btn8 = new JButton("");
+		btn8.setFocusable(false);
 		btn8.setMinimumSize(new Dimension(100, 9));
 		btn8.setBackground(SystemColor.activeCaption);
 		btn8.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		contentPane.add(btn8, "cell 2 2,grow");
 		
 		btn9 = new JButton("");
+		btn9.setFocusable(false);
 		btn9.setMinimumSize(new Dimension(100, 9));
 		btn9.setBackground(SystemColor.activeCaption);
 		btn9.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		contentPane.add(btn9, "cell 3 2,grow");
 		
 		btn10 = new JButton("");
+		btn10.setFocusable(false);
 		btn10.setMinimumSize(new Dimension(100, 9));
 		btn10.setBackground(SystemColor.activeCaption);
 		btn10.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -203,30 +213,35 @@ public class Bingo extends JFrame {
 		btnLBingo.setEnabled(false);
 		
 		btn11 = new JButton("");
+		btn11.setFocusable(false);
 		btn11.setMinimumSize(new Dimension(100, 9));
 		btn11.setBackground(SystemColor.activeCaption);
 		btn11.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		contentPane.add(btn11, "cell 0 3,grow");
 		
 		btn12 = new JButton("");
+		btn12.setFocusable(false);
 		btn12.setMinimumSize(new Dimension(100, 9));
 		btn12.setBackground(SystemColor.activeCaption);
 		btn12.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		contentPane.add(btn12, "cell 1 3,grow");
 		
 		btn13 = new JButton("");
+		btn13.setFocusable(false);
 		btn13.setMinimumSize(new Dimension(100, 9));
 		btn13.setBackground(SystemColor.activeCaption);
 		btn13.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		contentPane.add(btn13, "cell 2 3,grow");
 		
 		btn14 = new JButton("");
+		btn14.setFocusable(false);
 		btn14.setMinimumSize(new Dimension(100, 9));
 		btn14.setBackground(SystemColor.activeCaption);
 		btn14.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		contentPane.add(btn14, "cell 3 3,grow");
 		
 		btn15 = new JButton("");
+		btn15.setFocusable(false);
 		btn15.setMinimumSize(new Dimension(100, 9));
 		btn15.setBackground(SystemColor.activeCaption);
 		btn15.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -251,7 +266,12 @@ public class Bingo extends JFrame {
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		fileChooser.setDialogTitle("Elige la carpeta compartida:");
-		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+		try {
+			fileChooser.setCurrentDirectory(new File(new File(".").getCanonicalPath()));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		int result = fileChooser.showOpenDialog(this);
 		if (result == JFileChooser.APPROVE_OPTION) {
 		    File selectedFile = fileChooser.getSelectedFile();
@@ -386,7 +406,8 @@ public class Bingo extends JFrame {
 				botonParpadeando = arrayBotones[i];
 				parpadeo.start();
 			} else {
-				arrayBotones[i].setEnabled(false);
+				//arrayBotones[i].setEnabled(false);
+				if (arrayBotones[i].isEnabled()) arrayBotones[i].setContentAreaFilled(false);
 				if (arrayBotones[i].getBackground()!=Color.GREEN) arrayBotones[i].setBackground(null);
 			}
 		}	
@@ -479,6 +500,7 @@ public class Bingo extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					JButton btn=(JButton)e.getSource();	
 					parpadeo.stop();
+					btn.setContentAreaFilled(true);
 					btn.setBackground(Color.GREEN);
 					btn.setEnabled(false);
 					if (!cantoLinea) tengoLinea();
@@ -508,8 +530,14 @@ public class Bingo extends JFrame {
 						fwArchivoUsers = new FileWriter(ficheroUsers,true);
 						fwArchivoUsers.write(""+ s +"\n");
 						fwArchivoUsers.close();
-						scArchivoControl = new BufferedReader(new FileReader("data/control.txt"));
-						scArchivo= new BufferedReader(new FileReader("data/bolas.txt"));
+						//scArchivoControl = new BufferedReader(new FileReader("data/control.txt"));
+						FileInputStream fis = new FileInputStream(ficheroControl);
+						InputStreamReader isr = new InputStreamReader(fis);
+						scArchivoControl = new BufferedReader(isr);
+						//scArchivo= new BufferedReader(new FileReader("data/bolas.txt"));
+						fis = new FileInputStream(fichero);
+						isr = new InputStreamReader(fis);
+						scArchivo = new BufferedReader(isr);
 						if (scArchivo.readLine()==null) {
 
 							timer.start();
@@ -552,7 +580,6 @@ public class Bingo extends JFrame {
 					e1.printStackTrace();
 				}
 				btnLinea.setEnabled(false);
-				System.out.println(respuestas[numerosCarton[preguntaLinea]-1].replace(" ", ""));
 				String s = (String)JOptionPane.showInputDialog(
 	                    null,
 	                    preguntas[numerosCarton[preguntaLinea]-1],
@@ -634,7 +661,7 @@ public class Bingo extends JFrame {
 					} else {
 						try {
 							fwArchivoControl = new FileWriter(ficheroControl,true);
-							fwArchivoControl.write("0\n");
+							fwArchivoControl.write("6\n");
 							fwArchivoControl.close();
 							textNumero.setText("Lo Sentimos, el Folingo no es correcto.");
 						} catch (IOException e1) {
