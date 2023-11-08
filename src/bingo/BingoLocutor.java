@@ -47,6 +47,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import java.awt.SystemColor;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+import java.awt.Dimension;
 
 
 public class BingoLocutor extends JFrame {
@@ -61,7 +63,7 @@ public class BingoLocutor extends JFrame {
 	private JButton btnSalir;
 	private JTextPane lblBola;
 	private String[] preguntas = new String[50];
-	private String[] respuestas = new String[50];
+	private String[][] respuestas = new String[5][50];
 	private boolean[] haSalido = new boolean[50];
 	private int[] numerosCarton = new int[15];
 	private int numBolas = 0;
@@ -109,9 +111,20 @@ public class BingoLocutor extends JFrame {
 			Scanner sc;
 			sc = new Scanner(new InputStreamReader(new FileInputStream(ficheroPreguntas), "UTF-8"));
 			int numPreguntas = 0;
+			String resp;
+			
 			while (sc.hasNext()) {	
+				int correcta = 0;
 				preguntas[numPreguntas] = sc.nextLine();
-				respuestas[numPreguntas] = sc.nextLine(); 
+				for(int i = 0;i<4; i++) {
+					resp = sc.nextLine();
+					if (resp.toLowerCase().contains("(Correcta)".toLowerCase())) {
+						correcta = i;
+						resp = resp.substring(0,resp.length()-10);
+						respuestas[i][numPreguntas] = resp;
+					}
+				}
+				respuestas[4][numPreguntas] = "" + correcta;
 				numPreguntas++;
 				if (numPreguntas==50) break;
 			}
@@ -124,7 +137,7 @@ public class BingoLocutor extends JFrame {
 		}
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 870, 491);
+		setBounds(100, 100, 932, 531);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -155,10 +168,11 @@ public class BingoLocutor extends JFrame {
 		
 		btnParar = new JButton("Parar");
 		btnParar.setEnabled(false);
-		contentPane.setLayout(new MigLayout("", "[613px,grow][89px][10px][89px]", "[197px,grow][1px][64px][1px][64px][1px][64px]"));
+		contentPane.setLayout(new MigLayout("", "[613px,grow][:100px:100px][:10px:10px][:100px:100px]", "[197px,grow][1px][64px][1px][64px][1px][64px]"));
 		contentPane.add(lblBola, "cell 0 0 1 7,alignx center,aligny center");
 		
 		scrollPane = new JScrollPane();
+		scrollPane.setMaximumSize(new Dimension(32767, 400));
 		scrollPane.setAutoscrolls(true);
 		contentPane.add(scrollPane, "cell 1 0 3 1,grow");
 		
@@ -175,12 +189,7 @@ public class BingoLocutor extends JFrame {
 		contentPane.add(btnSalir, "cell 3 6,grow");
 		try {
 			fwBolas = new BufferedWriter(new FileWriter(ficheroBolas,true));
-			try {
-				scFicheroControl = new BufferedReader(new FileReader("data/control.txt"));
-			} catch (FileNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}	
+				
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -209,7 +218,9 @@ public class BingoLocutor extends JFrame {
         	return;
         }
 		if (bola!=0) {
-			lblAnterior.setText(historial + "\n" + (bola) + " - " + respuestas[bola-1] + "" + lblAnterior.getText().substring(19));
+			String respCorrecta;
+	        respCorrecta = respuestas[Integer.valueOf(respuestas[4][bola-1])][bola-1];
+			lblAnterior.setText(historial + "\n" + (bola) + " - " + respCorrecta + "" + lblAnterior.getText().substring(19));
 			javax.swing.SwingUtilities.invokeLater(new Runnable() {
 				   public void run() { 
 				       scrollPane.getVerticalScrollBar().setValue(0);
@@ -219,7 +230,9 @@ public class BingoLocutor extends JFrame {
         do {
         	bola = ((int) (Math.random()*50+1));
         } while (haSalido[bola-1]);
-        lblBola.setText("" + preguntas[bola-1] + "\r\n\r\nBola nº" + (bola) + " -- " + respuestas[bola-1] + "");
+        String respCorrecta;
+        respCorrecta = respuestas[Integer.valueOf(respuestas[4][bola-1])][bola-1];
+        lblBola.setText("" + preguntas[bola-1] + "\r\n\r\nBola nº" + (bola) + " -- " + respCorrecta + "");
         haSalido[bola-1] = true;
         try {
 			fwBolas.write("\r\n"+bola);
@@ -318,12 +331,7 @@ public class BingoLocutor extends JFrame {
 					String usuarios = "Partida Creada\r\n"
 							+ "Jugadores:\r\n";
 					while (scUsers.hasNext()) {
-						if (contUsers == 3) {
-							usuarios = usuarios + "\r\n";
-							contUsers = -1;
-						}
-						usuarios = usuarios + scUsers.next() + "      ";
-						contUsers++;
+						usuarios = usuarios + scUsers.next() + "\n";
 					}
 					
 					lblBola.setText(usuarios);
@@ -370,6 +378,12 @@ public class BingoLocutor extends JFrame {
 						fwControl = new FileWriter(ficheroControl,true);
 						fwControl.write("0\n");
 						fwControl.close();
+						try {
+							scFicheroControl = new BufferedReader(new FileReader("data/control.txt"));
+						} catch (FileNotFoundException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}	
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();

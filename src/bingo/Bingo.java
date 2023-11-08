@@ -67,7 +67,7 @@ public class Bingo extends JFrame {
 	private JButton btnLBingo;
 	private JButton btnLinea;
 	private String[] preguntas = new String[50];
-	private String[] respuestas = new String[50];
+	private String[][] respuestas = new String[5][50];
 	private JButton[] arrayBotones;
 	private int[] numerosCarton = new int[15];
 	private int numBolas = 0;
@@ -286,9 +286,21 @@ public class Bingo extends JFrame {
 			try {
 				sc = new Scanner(new InputStreamReader(new FileInputStream(ficheroPreguntas), "UTF-8"));
 				int numPreguntas = 0;
+				String resp;
 				while (sc.hasNext()) {	
+					int correcta = 0;
 					preguntas[numPreguntas] = sc.nextLine();
-					respuestas[numPreguntas] = sc.nextLine(); 
+					for(int i = 0;i<4; i++) {
+						resp = sc.nextLine();
+						if (resp.toLowerCase().contains("(Correcta)".toLowerCase())) {
+							correcta = i;
+							resp = resp.substring(0,resp.length()-10);
+							respuestas[i][numPreguntas] = resp;
+						} else {
+							respuestas[i][numPreguntas] = resp;
+						}
+					}
+					respuestas[4][numPreguntas] = "" + correcta;
 					numPreguntas++;
 					if (numPreguntas==50) break;
 				}
@@ -460,7 +472,7 @@ public class Bingo extends JFrame {
 					e1.printStackTrace();
 				}
 		    	if (anterior!=0 && bola!=anterior) {
-		    		textAnterior.setText((anterior) + "\r\n" + respuestas[anterior-1] + "");
+		    		textAnterior.setText((anterior)+ "");
 		    		if (penalizacion > 0) penalizacion--;
 		    	}
 		    	try {
@@ -498,13 +510,15 @@ public class Bingo extends JFrame {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					if (timer.isRunning()) {
 					JButton btn=(JButton)e.getSource();	
-					parpadeo.stop();
-					btn.setContentAreaFilled(true);
-					btn.setBackground(Color.GREEN);
-					btn.setEnabled(false);
-					if (!cantoLinea) tengoLinea();
-					tengoBingo();
+						parpadeo.stop();
+						btn.setContentAreaFilled(true);
+						btn.setBackground(Color.GREEN);
+						btn.setEnabled(false);
+						if (!cantoLinea) tengoLinea();
+						tengoBingo();
+					}
 				}
 			});
 		}
@@ -513,23 +527,8 @@ public class Bingo extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String s = (String)JOptionPane.showInputDialog(
-	                    null,
-	                    "Escriba aqui su nombre de Jugador",
-	                    "Nombre de Jugador",
-	                    JOptionPane.PLAIN_MESSAGE,
-	                    null,
-	                    null,
-	                    "");
-
-				//If a string was returned, say so.
-				if ((s != null) && (s.length() > 0) && !estaNombre(s)) {
-					setTitle("FOLINGO - " + s);
-					usuario = s;
+				
 					try {
-						fwArchivoUsers = new FileWriter(ficheroUsers,true);
-						fwArchivoUsers.write(""+ s +"\n");
-						fwArchivoUsers.close();
 						//scArchivoControl = new BufferedReader(new FileReader("data/control.txt"));
 						FileInputStream fis = new FileInputStream(ficheroControl);
 						InputStreamReader isr = new InputStreamReader(fis);
@@ -539,12 +538,30 @@ public class Bingo extends JFrame {
 						isr = new InputStreamReader(fis);
 						scArchivo = new BufferedReader(isr);
 						if (scArchivo.readLine()==null) {
-
+							String s = (String)JOptionPane.showInputDialog(
+				                    null,
+				                    "Escriba aqui su nombre de Jugador",
+				                    "Nombre de Jugador",
+				                    JOptionPane.PLAIN_MESSAGE,
+				                    null,
+				                    null,
+				                    "");
+							
+							//If a string was returned, say so.
+							if ((s != null) && (s.length() > 0) && !estaNombre(s)) {
+							fwArchivoUsers = new FileWriter(ficheroUsers,true);
+							fwArchivoUsers.write("" + s +"\n");
+							fwArchivoUsers.close();
+							setTitle("FOLINGO - " + s);
+							usuario = s;
 							timer.start();
 							textNumero.setText("Esperando Inicio del Bingo");
 							//DESACTIVAR EL PROPIO NUEVA PARTIDA
 							btnJugar.setEnabled(false);
 							crearCarton();	
+							} else JOptionPane.showConfirmDialog(null, "El nombre de Usuario no es valido",
+									"LINEA", JOptionPane.CLOSED_OPTION,
+									JOptionPane.INFORMATION_MESSAGE);
 						} else {
 							JOptionPane.showConfirmDialog(null, "Lo sentimos, No hay sala creada, espere a la siguiente.",
 									"LINEA", JOptionPane.CLOSED_OPTION,
@@ -558,11 +575,7 @@ public class Bingo extends JFrame {
 
 					} catch (IOException e1) {
 
-					}
-				} else JOptionPane.showConfirmDialog(null, "El nombre de Usuario no es valido",
-						"LINEA", JOptionPane.CLOSED_OPTION,
-						JOptionPane.INFORMATION_MESSAGE);
-				
+					}	
 			}
 		});
 		
@@ -580,40 +593,56 @@ public class Bingo extends JFrame {
 					e1.printStackTrace();
 				}
 				btnLinea.setEnabled(false);
-				String s = (String)JOptionPane.showInputDialog(
-	                    null,
-	                    preguntas[numerosCarton[preguntaLinea]-1],
-	                    "Responde para acertar la Linea",
-	                    JOptionPane.PLAIN_MESSAGE,
-	                    null,
-	                    null,
-	                    "");
-				if ((s != null) && (s.length() > 0)) {
-					if (s.replace(" ", "").equalsIgnoreCase(respuestas[numerosCarton[preguntaLinea]-1].replace(" ", ""))) {
-						try {
-							fwArchivoControl = new FileWriter(ficheroControl,true);
-							fwArchivoControl.write("2\n");
-							fwArchivoControl.close();
-							textNumero.setText("LINEA CORRECTA");
-						} catch (IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}	
-						timer.start();
-						cantoLinea = true;
-					} else {
-						try {
-							fwArchivoControl = new FileWriter(ficheroControl,true);
-							fwArchivoControl.write("5\n");
-							fwArchivoControl.close();
-							textNumero.setText("Lo Sentimos, la linea no es correcta.");
-						} catch (IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}	
-						timer.start();	
-						penalizacion = 3;
+				String[] opciones = new String[4];
+				String respu = preguntas[numerosCarton[preguntaLinea]-1] +"\n";
+				for(int i = 0;i<4;i++) {
+					switch (i) {
+						case 0:
+							opciones[i]="A ";
+							respu += "\nA->" + respuestas[i][numerosCarton[preguntaLinea]-1];
+							break;
+						case 1:
+							opciones[i]="B ";
+							respu += "\nB-> " + respuestas[i][numerosCarton[preguntaLinea]-1];
+							break;
+						case 2:
+							opciones[i]="C";
+							respu += "\nC-> " + respuestas[i][numerosCarton[preguntaLinea]-1];
+							break;
+						case 3:
+							opciones[i]="D";
+							respu += "\nD-> " + respuestas[i][numerosCarton[preguntaLinea]-1];
+							break;
+					
 					}
+				}
+				int selection = JOptionPane.showOptionDialog(null, respu, "Responda para acertar el Folingo!" , 
+						JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
+				if (selection == Integer.valueOf(respuestas[4][numerosCarton[preguntaLinea]-1])) {
+					try {
+						fwArchivoControl = new FileWriter(ficheroControl,true);
+						System.out.println("Linea");
+						fwArchivoControl.write("2\n");
+						fwArchivoControl.close();
+						textNumero.setText("LINEA CORRECTA");
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}	
+					timer.start();
+					cantoLinea = true;
+				} else {
+					try {
+						fwArchivoControl = new FileWriter(ficheroControl,true);		
+						fwArchivoControl.write("5\n");
+						fwArchivoControl.close();
+						textNumero.setText("Lo Sentimos, la linea no es correcta.");
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}	
+					timer.start();	
+					penalizacion = 3;
 				}
 				/*JOptionPane.showConfirmDialog(null, "Enhorabuena has hecho linea.",
 	                    "LINEA", JOptionPane.CLOSED_OPTION,
@@ -630,6 +659,7 @@ public class Bingo extends JFrame {
 				//DESACTIVAR EL PROPIO NUEVA PARTIDA
 				try {
 					fwArchivoControl = new FileWriter(ficheroControl,true);
+					System.out.println("Bingo");
 					fwArchivoControl.write("3\n" + usuario + "\n" + (numerosCarton[preguntaBingo]-1) + "\n");
 					fwArchivoControl.close();
 				} catch (IOException e1) {
@@ -637,44 +667,59 @@ public class Bingo extends JFrame {
 					e1.printStackTrace();
 				}
 				btnLBingo.setEnabled(false);
-				System.out.println(respuestas[numerosCarton[preguntaLinea]-1].replace(" ", ""));
-				String s = (String)JOptionPane.showInputDialog(
-	                    null,
-	                    preguntas[numerosCarton[preguntaBingo]-1],
-	                    "Responde para acertar el Folingo",
-	                    JOptionPane.PLAIN_MESSAGE,
-	                    null,
-	                    null,
-	                    "");
-				if ((s != null) && (s.length() > 0)) {
-					if (s.replace(" ", "").equalsIgnoreCase(respuestas[numerosCarton[preguntaBingo]-1].replace(" ", ""))) {
-						try {
-							fwArchivoControl = new FileWriter(ficheroControl,true);
-							fwArchivoControl.write("4\n"+usuario+"\n");
-							fwArchivoControl.close();
-							textNumero.setText("HAS CANTADO FOLINGO");
-							btnJugar.setEnabled(true);
-						} catch (IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}	
-					} else {
-						try {
-							fwArchivoControl = new FileWriter(ficheroControl,true);
-							fwArchivoControl.write("6\n");
-							fwArchivoControl.close();
-							textNumero.setText("Lo Sentimos, el Folingo no es correcto.");
-						} catch (IOException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}	
-						penalizacion = 3;
-						timer.start();
+				String[] opciones = new String[4];
+				String respu =preguntas[numerosCarton[preguntaBingo]-1] +"\n";
+				for(int i = 0;i<4;i++) {
+					switch (i) {
+						case 0:
+							opciones[i]="A";
+							respu += "\nA-> " + respuestas[i][numerosCarton[preguntaBingo]-1];
+							break;
+						case 1:
+							opciones[i]="B";
+							respu += "\nB-> " + respuestas[i][numerosCarton[preguntaBingo]-1];
+							break;
+						case 2:
+							opciones[i]="C";
+							respu += "\nC-> " + respuestas[i][numerosCarton[preguntaBingo]-1];
+							break;
+						case 3:
+							opciones[i]="D";
+							respu += "\nD-> " + respuestas[i][numerosCarton[preguntaBingo]-1];
+							break;
+					
 					}
 				}
-				
-			}
-		});
+				int selection = JOptionPane.showOptionDialog(null, respu, "Responda para acertar el Folingo!", 
+						JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opciones, opciones[0]);
+				if (selection == Integer.valueOf(respuestas[4][numerosCarton[preguntaBingo]-1])) {
+					try {
+						fwArchivoControl = new FileWriter(ficheroControl,true);
+						fwArchivoControl.write("4\n"+usuario+"\n");
+						fwArchivoControl.close();
+						textNumero.setText("HAS CANTADO FOLINGO");
+						btnJugar.setEnabled(true);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}	
+				} else {
+					try {
+						fwArchivoControl = new FileWriter(ficheroControl,true);
+						fwArchivoControl.write("6\n");
+						fwArchivoControl.close();
+						textNumero.setText("Lo Sentimos, el Folingo no es correcto.");
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}	
+					penalizacion = 3;
+					timer.start();
+				}
+
+
+				}
+			});
 		
 		/*btnSalir.addActionListener(new ActionListener() {
 

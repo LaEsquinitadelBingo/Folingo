@@ -1,136 +1,250 @@
-¿Cuál es la duración máxima del contrato para la formación?  
-3 Años
-¿Cuál es la duración máxima del contrato en prácticas?  
-2 Años
-¿Qué duración puede tener como máximo un contrato para obra 
-4 Años
-¿Qué régimen se aplica al contrato a domicilio?  
-Articulo 13
-¿Qué circunstancias de la producción permiten al empresario 
-Exceso de trabajo.
-¿Una de las causas por las que puede suspenderse el contrato 
-Mutuo acuerdo
-¿Debe constar por escrito el contrato de trabajo?  
-No
-1 de las clases de contratos temporales que existe.
-De interinidad
-¿Por qué razón se realiza el contrato de relevo?  
-Jubilacion
-¿Cuál es la diferencia entre el contrato en prácticas y el
-Titulacion
-¿Cuántos contratos temporales pueden sucederse con el mismo 
-24 Meses de 30
-¿Cuánto puede durar como maximo el periodo de prueba?  
-6 Meses
-Si llevo mucho tiempo contratado temporalmente por una empresa
-No
-¿Qué empresas empeñan el contrato de puesta a disposición?
-Las ETT
-¿A que ambite referencia el deber de obediencia del trabajador?
-Ámbito Laboral
-¿Cómo se pueden retribuir las horas extraordinarias?
-Descanso Retribuido
-¿A qué permisos tiene derecho el trabajador?, ¿se mantiene la 
-Respuesta2
-¿Con qué garantías cuenta el trabajador para el cobro de su
-Respuesta2
-¿Cuándo puede un trabajador elegir o ser elegido representante
-Respuesta3
-¿Cuáles son los límites del derecho de huelga?
-Respuesta4
-¿Necesito abogado para ir a juicio por cuestiones laborales?
-Respuesta5
-¿Cabe realizar pactos entre empresario y trabajador en materia
-Respuesta6
-¿Cuál es el rendimiento exigible al trabajador?
-Respuesta7
-¿Qué pasa si no me da trabajo el empresario, si me hace
-Respuesta8
-¿Cómo se concreta el principio de no discriminación en el
-Respuesta9
-¿Qué es la condición más beneficiosa para el trabajador?
-Respuesta11
-¿A qué derechos no puede renunciar válidamente el trabajador?
-Respuesta32
-¿En qué condiciones puede trabajar un mayor de 16 años pero
-Respuesta121
-¿Qué pasa si muere o se jubila el empresario?
-Respuesta42
-¿Qué pasa con los trabajadores si se traspasa la empresa?
-Respuesta123
-¿Cuáles son los supuestos de excedencia voluntaria de un
-Respuesta123
-¿Qué medidas han de adoptarse para proteger adecuadamente
-Respuesta321
-¿Qué pasa con las vacaciones no disfrutadas?
-Respuesta532
-¿Es embargable el salario del trabajador?
-Respuesta2544
-¿Cuándo dice la Ley que debe pagarse el salario?
-Respuesta523
-¿Puede haber pagos en especie?, ¿Computan a efectos de
-Respuesta43
-¿Cuántos días de fiesta corresponden al trabajador anualmente
-Respuesta5243
-¿En qué consiste el derecho a la promoción interna y a la
-Respuesta432
-¿En qué consiste el pacto de no competencia?, ¿es lo mismo
-Respuesta4321
-¿Cual es la duración máxima del pacto de permanencia en la
-Respuesta523
-¿Cuándo prescriben las faltas cometidas por los trabajadores?
-Respuesta4231
-¿Puede modificar el horario de trabajo u otras condiciones 
-Respuesta231
-¿Puede el empresario adoptar medidas de control de los
-Respuesta432
-¿Puede el empresario modificar las funciones a realizar
-Respuesta53242
-¿Puede el empresario cerrar la empresa temporalmente y
-Respuesta312
-¿Pueden cederse libremente trabajadores de una empresa
-Respuesta321
-¿Puede la empresa forzar a un trabajador a jubilarse a 
-Respuesta3421
-¿Cuáles son los motivos legales de despido?
-Respuesta213
-¿Cuándo es improcedente un despido y cuál es el importe
-Respuesta321
-¿Cuándo es nulo un despido y cuáles son sus consecuenci
-Respuesta312
-¿Qué pasa si en juicio se considera procedente el despi
-Respuesta32
-¿Cómo se realiza el despido disciplinario?
-Respuesta213
-¿Qué es el despido tácito?
-Respuesta123
-¿Me pueden despedir si estoy de baja?
-Respuesta213
-¿Cuál es el plazo máximo para reclamar judicialmente
-Respuesta312
-¿Cuál es el plazo máximo para pedir el salario dejado
-Respuesta123
-¿Cuál es el plazo máximo para impugnar un despido?
-Respuesta213
-¿Cuál es el plazo máximo para imponer la sanción por e
-Respuesta543
-¿Cuál es el salario mínimo interprofesional?, ¿es lo 
-Respuesta653
-¿Qué es la absorción y compensación del salario?
-Respuesta7456
-¿Cuáles son las funciones de los representantes de los
-Respuesta635
-¿Cuáles son las funciones de los representantes sindi
-Respuesta123
-¿Está regulado el trabajo en el hogar familiar?
-Respuesta65473
-¿Cuál es el régimen del personal de alta dirección?
-Respuesta2314
-¿En qué consisten las categorías y los grupos profesi
-Respuesta67534
-¿Hasta qué punto prima la voluntad de las partes plasm
-Respuesta5432
-¿Es obligatorio acudir al Servicio De Mediación, Arbitr
-Respuesta2314
-¿Pueden los miembros del comité de empresa acumular 
-Respuesta123
+Señale cuál de las siguientes actividades que se indica está excluida del derecho del trabajo:
+Autónomo (correcta)
+Contrato a tiempo parcial
+Contrato de relevo 
+Indefinido ordinario. 
+Puede una persona trabajadora renunciar al derecho a disfrutar de sus vacaciones:
+No, por el principio de irrenunciabilidad de los derechos (correcta)
+Si, por el principio de irrenunciabilidad de los derechos
+Si, por el derecho a la ocupación efectiva. 
+No por el derecho a la ocupación efectiva.
+¿Puede un trabajador renunciar a los derechos recogidos en su contrato de trabajo?:
+Siempre que no sean derechos reconocidos por ley o por convenio (correcta)
+No, bajo ningún concepto. 
+Si, siempre y cuando él quiera.
+Si, siempre y cuando avise con 15 días de antelación a la empresa. 
+Cualquier tipo de falta prescribe a los: 
+6 meses desde que se cometió (correcta)
+15 días desde que se comunicó al empleado. 
+2 años. 
+1 mes y con suerte. 
+El derecho a la ocupación efectiva del puesto de trabajo significa que la empresa debe de respetar: 
+Las funciones pactadas(correcta)
+Una adecuada política de seguridad e higiene. 
+El uso de dispositivos digitales y la intimidad frente al uso de ellos mismos. 
+El derecho de la okupación de la vivienda. 
+En el contrato de trabajo se manifiesta la voluntad de establecer una relación laboral por parte de:
+Del empleador y el trabajador(correcta)
+Del empleador
+Del trabajador
+Del rey de españa
+Un menor de 18 años puede trabajar...: 
+Emancipado
+Con autorización de sus padres (firma).
+Con que el menor quiera, suficiente. 
+Las dos son primeras son ciertas (correcta)
+Una persona física puede ser empresaria desde: 
+Los 18 años (correcta)
+Los 22 años
+Los 16 años.
+Los 30 años.
+El periodo de prueba del contrato para la obtención de la práctica profesional es: 
+1 mes, salvo lo dispuesto en convenio colectivo(correcta)
+1 mes
+2 meses
+3 meses
+10-Salvo que el convenio colectivo establezca otra cosa, la duración de un contrato de obra o servicio será de:
+Este tipo de contrato desaparece con la nueva reforma(correcta)
+3 meses
+6 meses
+9 meses
+Para que cualquiera de las partes puede rescindir un contrato durante el periodo de prueba se precisa un preaviso de: 
+No es necesario preaviso (correcta)
+1 semana
+15 días
+1 mes
+El periodo de prueba que se establece para un contrato en alternancia  de un fp superior será como máximo de: 
+No podra establecerse periodo de prueba en estos contratos (correcta)
+2 meses
+3 días
+3 meses
+El contrato en formativo en alternancia tiene como objetivo: 
+Conseguir trabajo.
+Conseguir  que el trabajador adquiera formación teórica y práctica para desempeñar un oficio.(correcta)
+Conseguir que el trabajador adquiera formación teórica para desempeñar un oficio
+Conseguir que el trabajador adquiera formación práctica para desempeñar un oficio .
+El teletrabajo es:
+Una modalidad del trabajo a distancia en la que se usan medios telemáticos(correcta)
+Una moda nueva.
+Un contrato basura.
+Es lo mismo que el trabajo a distancia. 
+Durante el periodo de prueba el trabajador: 
+Tiene los mismos derechos y obligaciones (correcta)
+Tiene los mismos derechos pero no obligaciones.
+Tiene las mismas obligacio pero no derechos
+El empleado escoge que prefiero, si tener los mismo derechos y obligaciones o no. 
+Una vez firmado el contrato laboral, aunque haya alguna cláusula abusiva, al estar firmado el contrato se llevará adelante: 
+Como el trabajador ha firmado, si. 
+No, siempre y cuando el trabajador negocie con el empleador. 
+No perjudica al trabajador y se considera como no puesta, nulo. (correcta)
+Si, porque carta sobre la mesa pesa. 
+Cuál es el límite de horas extra de fuerza mayor 
+No existe(correcta)
+1 mes computado
+6 dias a la semana
+Las que el trabajador quiera hacer.
+Cuál es la jornada máxima semanal: 
+40 horas en cómputo anual(correcta).
+37.5 horas en cómputo anual
+45 horas en cómputo anual. 
+1 horas en cómputo anual.
+Indica que permiso retribuido tiene derecho el progenitor por el nacimiento de hij@: 
+Ninguno salvo que lo recoja el convenio
+1 hora de ausencia, que puede dividirse en dos o reducir en media hora. (correcta)
+Tiempo imprescindible
+15 días naturales.
+La reducción de jornada para el cuidado de un lactante menor de 9 meses le corresponde a: 
+La mujer
+El hombre
+El lactante
+Es un derecho de ambos progenitores(correcta)
+El descanso mínimo semanal para los mayores de edad es: 
+Día y medio(correcta)
+2 días
+1 día
+No hay descanso mínimo establecido. 
+Las horas extraordinarias son voluntarias excepto para:
+Menores de 18 años.
+Trabajadores nocturnos.
+Contratos de tiempo parcial 
+Todas son correctas(correcta)
+Los menores de edad de cuánto tiempo de cuánto tiempo de descanso mínimo semanal disfrutan?
+2 días ininterrumpidos(correcta)
+3 días ininterrumpidos
+Dia y medio ininterrumpido 
+1 día. 
+La jornada laboral diaria máxima, con empleadores diferentes es de:
+8 horas diaria
+9 horas diarias
+10 horas diarias
+No hay límite (correcta)
+Cuántas fiestas nacionales hay al año, las cuales se puedan disfrutar como festivo: 
+12 días de los cuales 1 es local 
+14 días de los cuales 2 son locales (correcta)
+16 días de los cuales 3 son locales
+18 días de los cuales 4 son locales. 
+Cuáles son los días de festivos,  que siempre se respetan como fiestas de ámbito nacional? 
+1 de enero, 1 de mayo, 12 de octubre y 25 de diciembre.(correcta)
+1 de enero, 2 de febrero, 3 de marzo y 4 de abril 
+1 de enero, 1 de marzo, 12 de octubre y 25 de diciembre.
+4 de julio, 26 de febrero, 9 de octubre, y 25 de diciembre.
+Raul y su novia viven juntos y su novia ha tenido un accidente. ¿cuántos días de permiso retribuido puede cogerse raul para cuidar de su novia?
+2 días
+3 días
+4 días
+5 días (correcta)
+Cuántos días libres se pueden coger raul y sofía al haberse casado? 
+10 días.
+12 días.
+15 días(correcta)
+20 días.
+¿Cuánto puede durar un contrato por circunstancias de producción? 
+6 meses (ampliable a 1 año por convenio colectivo)(correcta)
+9 meses (ampliable a 1 año por convenio colectivo).
+1 año (ampliable 6 meses por convenio colectivo).
+1 año (ampliable 1 año más por convenio colectivo). 
+Cuando se tiene un contrato por sustitución puedes trabajar: 
+A jornada completa.
+A jornada parcial
+Escoger y mezclar jornada completa y parcial
+El horario es el mismo que tenía la persona trabajadora que se sustituye. (correcta)
+Qué sucede con las vacaciones no disfrutadas? 
+Se puede disfrutar el año cuando el trabajador quiera. 
+Todos los días sin disfrutar, se pierde legalmente el derecho a disfrutarlas. (correcta)
+Se pueden disfrutar solamente 15 días después del transcurso del año. 
+Todas son correctas.
+Cual es el salario mínimo interprofesional para una jornada laboral de 8 horas diarias?
+1080e mes.(correcta)
+1280e mes.
+959e mes.
+850e mes. 
+El contrato para la formación y el aprendizaje tiene como finalidad:
+Conseguir cualificación profesional(correcta)
+Conseguir un buen entorno de desarrollo profesional. 
+Conseguir su respectivo sueldo.
+Conseguir inserción social. 
+Los trabajadores tienen derecho a conocer el periodo de disfrute de vacaciones con al menos:
+2 meses con antelación (correcta)
+1 mes con antelación
+3 meses con antelación
+No tiene derecho a saberlo con antelación.
+En qué casos se conceden bonificaciones a los empresarios por contratar trabajadores?
+Víctimas de violencia de género o violencia sexual.
+Trabajadores en situación de exclusión social. 
+Personas con discapacidad con un grado superior o igual al 33%.
+Todas son correctas.(correcta)
+En qué casos no se pueden usar los contratos por circunstancias de producción:
+Para responder a situaciones propias del contrato fijo-discontinuo.
+Para la realización de trabajos en el marco de contratas, subcontratas o concesiones.
+Las primeras dos, son correctas.(correcta)
+Ninguna es correcta.
+En qué caso se tienen que aplicar los planes de igualdad desde el 2022? 
+Las empresas con 50 o más trabajadores. (correcta)
+Las empresas con 40 o más trabajadores.
+Las empresas con 30 o más trabajadores. 
+Las empresas con 20 o más trabajadores.
+¿Quienes ejercen el derecho de participación en una empresa?
+Los sindicatos
+Los delegados de personal
+El comité de la empresa
+Todas son correctas (correcta)
+¿Se puede empeorar un convenio colectivo?
+Si, si así se ha negociado.
+Si, siempre y cuando se respeten los derechos mínimos establecidos por la ley(correcta)
+No, bajo ningún concepto.
+No, porque no deroga en su integridad al anterior. 
+¿Puede el convenio colectivo empeorar las condiciones laborales establecida en el estatuto de trabajadores?
+Si, siempre y cuando ambas partes estén de acuerdo.
+Si, aunque siempre y cuando haya un proceso de arbitraje de por medio. 
+No, porque el convenio está por encima del estatuto de trabajadores.
+No, el convenio solo puede mejorar las condiciones, nunca empeorarlas. (correcta)
+¿Qué personas se pueden afiliar a un sindicato?
+Jubilados
+Personas trabajadoras
+Personas con diversidad funcional.
+Todas son correctas (correcta)
+¿Qué personas no pueden afiliarse a un sindicato?
+Personas que pertenezcan a una institución de carácter militar o que tenga armas.
+Jueces, magistrados y fiscales mientras estén en activo.
+Jueces magistrados y fiscales.
+Las primeras dos opciones(correcta)
+¿Qué son los conflictos colectivos?
+Son aquellos que enfrentan a un grupo de trabajadores con un empresario o grupo de empresarios.(correcta)
+Son aquellos que enfrentan a los trabajadores entre sí, indiferentemente del sindicato que sean.
+Son conflictos armados, que suceden cuando un empresario subleva a sus trabajadores.
+Es un battle royale de sindicatos.
+¿Qué es una huelga?
+La huelga consiste en el cese temporal de la prestación de servicios acordada por una colectividad de trabajadores con motivo de conflicto laboral.(correcta)
+Son festivos dados a los trabajadores por que se han quejado tanto ante su empresa que acaba cediendo.
+Es un acto simbólico realizado por los trabajadores pero sin necesidad de abandonar el lugar de trabajo. Están obligados por contrato a seguir trabajando. 
+Todas son incorrectas.
+El ejercicio del derecho a la huelga:
+Se reconoce de forma individual, aunque se ejerce de manera colectiva(correcta)
+Se reconoce de forma colectiva, aunque se ejerce de manera individual.
+Se reconoce de forma individual y también se ejerce de manera individual
+Se reconoce de forma colectiva y también se ejerce de manera colectiva. 
+Comisiones obreras quiere realizar una huelga por motivos políticos, para manifestarse en contra del gobierno actual. ¿es una huelga justificada?
+No, porque es ajena al interés profesional de los trabajadores afectados(correcta)
+No, porque no se pueden manifestar.
+Si, porque al estar convocado por un sindicato se justifica la huelga. 
+Si, porque así lo han decidido desde el sindicato. 
+Pepe trabaja en una empresa y ha ido a la huelga.¿Puede el jefe de Pepe echarle despedirle y descontarle los dias que falte de las vacaciones? 
+No, porque el contrato de trabajo queda en suspenso.
+No, porque el empresario no puede sustituir a los trabajadores huelguistas.
+No, porque los días de huelga no deben ser descontados de las vacaciones, es ilegal. 
+Todas son correctas (correcta)
+En qué casos podrá el empresario realizar un cierre patronal a su empresa? 
+Cuando haya peligro notorio de violencia para las personas. 
+Cuando haya una ocupación ilegal del centro de trabajo
+Que el volumen de inasistencia en el trabajo impida gravemente la producción.
+Todas son correctas(correcta)
+El derecho de reunión de un trabajador, , cuando se puede realizar?
+Los trabajadores de una misma empresa tienen derecho a reunirse fuera del trabajo
+Los trabajadores de una misma empresa tienen derecho a reunirse en el centro de  trabajo. 
+Los trabajadores de una misma empresa no tienen derecho a reunirse.
+Las dos primeras son correctas. (correcta)
+¿Que es un liberado sindical?
+Un liberado sindical es un trabajador elegido como representante de un sector de trabajadores, incluso de una empresa, al cual se le libera de su labor habitual para que pueda dedicarse a actividades sindicales.(correcta)
+El jefe de los sindicatos.
+Una idea postmodernista y snob que circula por las universidades más liberales del país. 
+Todas son correctas.
