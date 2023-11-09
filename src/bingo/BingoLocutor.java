@@ -85,6 +85,7 @@ public class BingoLocutor extends JFrame {
 	private String historial;
 	private JScrollPane scrollPane;
 	private JTextPane lblAnterior;
+	private int control;
 	/**
 	 * Launch the application.
 	 */
@@ -208,6 +209,9 @@ public class BingoLocutor extends JFrame {
         	btnParar.setEnabled(false);
         	numBolas = 0;
     		try {
+    			RandomAccessFile raf = new RandomAccessFile(ficheroUsers, "rw");
+				raf.setLength(0); // Esto borra el contenido del archivo
+				raf.close();
 				fwControl = new FileWriter(ficheroControl,true);
 				fwControl.write("4\n");
 				fwControl.close();
@@ -257,9 +261,7 @@ public class BingoLocutor extends JFrame {
 		timerControl = new Timer (300, new ActionListener ()
 		{
 		    public void actionPerformed(ActionEvent e)
-		    {
-		    	int control;
-		    	
+		    {	
 		    	try {
 		    		control = Integer.parseInt(scFicheroControl.readLine());
 			    	if (control == 1) {
@@ -288,6 +290,9 @@ public class BingoLocutor extends JFrame {
 			    		lblBola.setText("El ganador ha sido " + usuario + "");
 			    		timer.stop();
 			    		timerControl.stop();
+			    		RandomAccessFile raf = new RandomAccessFile(ficheroUsers, "rw");
+						raf.setLength(0); // Esto borra el contenido del archivo
+						raf.close();
 			    		btnComenzar.setEnabled(true);
 			    		btnAuto.setEnabled(false);
 						btnBola.setEnabled(false);
@@ -328,8 +333,7 @@ public class BingoLocutor extends JFrame {
 		    	contUsers=0;
 		    	try {
 					scUsers =  new Scanner(ficheroUsers);
-					String usuarios = "Partida Creada\r\n"
-							+ "Jugadores:\r\n";
+					String usuarios = "Partida Creada\r\n";
 					while (scUsers.hasNext()) {
 						usuarios = usuarios + scUsers.next() + "\n";
 					}
@@ -363,11 +367,19 @@ public class BingoLocutor extends JFrame {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					timerControl.start();
+					
 					try {
-							
+						Scanner scUsers =  new Scanner(ficheroUsers);
+						if (scUsers.hasNext()) {
+							JOptionPane.showConfirmDialog(null, "Lo sentimos, Ya se esta jugando una partida, espera a que termine.",
+									"LINEA", JOptionPane.CLOSED_OPTION,
+									JOptionPane.INFORMATION_MESSAGE);
+							System.exit(4);
+						}
+						timerControl.start();
 						RandomAccessFile raf = new RandomAccessFile(ficheroUsers, "rw");
 						raf.setLength(0); // Esto borra el contenido del archivo
+						raf.writeBytes( "Jugadores:\n");
 						raf.close();
 						 raf = new RandomAccessFile(ficheroBolas, "rw");
 						raf.setLength(0); // Esto borra el contenido del archivo
@@ -412,6 +424,9 @@ public class BingoLocutor extends JFrame {
 						try {
 							fwBolas.write("n");
 							fwBolas.close();
+							RandomAccessFile raf = new RandomAccessFile(ficheroUsers, "rw");
+							raf.setLength(0); // Esto borra el contenido del archivo
+							raf.close();
 						} catch (IOException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -429,6 +444,9 @@ public class BingoLocutor extends JFrame {
 						try {
 							fwBolas.write("n");
 							fwBolas.close();
+							RandomAccessFile raf = new RandomAccessFile(ficheroUsers, "rw");
+							raf.setLength(0); // Esto borra el contenido del archivo
+							raf.close();
 						} catch (IOException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
