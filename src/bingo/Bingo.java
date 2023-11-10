@@ -94,6 +94,7 @@ public class Bingo extends JFrame {
 	private String usuario;
 	private int preguntaLinea, preguntaBingo;
 	private int penalizacion = 0;
+	private boolean mio = false;
 
 	/**
 	 * Launch the application.
@@ -130,7 +131,7 @@ public class Bingo extends JFrame {
 		
 		textNumero = new JTextPane();
 		textNumero.setBackground(SystemColor.control);
-		textNumero.setFont(new Font("Tahoma", Font.PLAIN, 45));
+		textNumero.setFont(new Font("Britannic Bold", Font.PLAIN, 45));
 		textNumero.setEditable(false);
 		contentPane.add(textNumero, "cell 0 0 5 1,alignx center,aligny center");
 		StyledDocument doc = textNumero.getStyledDocument();
@@ -248,6 +249,7 @@ public class Bingo extends JFrame {
 		contentPane.add(btn15, "cell 4 3,grow");
 		
 		textAnterior = new JTextPane();
+		textAnterior.setFont(new Font("Britannic Bold", Font.PLAIN, 20));
 		textAnterior.setBackground(SystemColor.control);
 		textAnterior.setEditable(false);
 		contentPane.add(textAnterior, "cell 5 0 2 1,alignx center,aligny center");
@@ -455,15 +457,36 @@ public class Bingo extends JFrame {
 		    		control = Integer.parseInt(scArchivoControl.readLine());
 		    		if(control == 2) {
 			    		cantoLinea = true;
-			    		btnLinea.setEnabled(false);
+			    		textNumero.setText("La linea es correcta.");
 			    	} else if(control == 4) {
 			    		btnLBingo.setEnabled(false);
 			    		btnLinea.setEnabled(false);
 			    		btnJugar.setEnabled(true);
 			    		parpadeo.stop();
 			    		timer.stop();
-			    	} else if(control == -1) {
+			    	} else if(control == 5) {
+			    		cantoLinea = false;
 			    		
+			    	} else if(control == 5) {
+			    		
+			    	} else if(control==1) {
+			    		if (!mio) {
+				    		textAnterior.setText(textNumero.getText());
+				    		String usuario = scArchivoControl.readLine();
+				    		textNumero.setText("Comprobando linea de: "+ usuario );
+				    		btnLinea.setEnabled(false);
+			    		}
+			    	} else if(control == 3) {
+			    		if (!mio) {
+				    		textAnterior.setText(textNumero.getText());
+				    		String usuario = scArchivoControl.readLine();
+				    		textNumero.setText("Comprobando bingo de: "+ usuario );
+				    		btnLBingo.setEnabled(false);
+			    		}
+			    	} else if(control == 4) {
+			    		if (!mio) {
+			    			textNumero.setText("Lo sentimos no has cantado Bingo.");
+			    		}
 			    	}
 				} catch (NumberFormatException e1) {
 					
@@ -474,10 +497,21 @@ public class Bingo extends JFrame {
 		    	if (anterior!=0 && bola!=anterior) {
 		    		textAnterior.setText((anterior)+ "");
 		    		if (penalizacion > 0) penalizacion--;
+		    		if (penalizacion == 0) {
+		    			if (!cantoLinea) {
+		    			tengoLinea();	
+		    			}
+		    			tengoBingo();
+		    		}
 		    	}
 		    	try {
 		    		anterior = bola;
 		    		bola = Integer.parseInt(scArchivo.readLine());	
+		    		if (bola == -1) {
+		    			textNumero.setText("Partida finalizada.");
+		    			return;
+		    		}
+		    		mio = false;
 			    	textNumero.setText("" + (bola) + "");
 			    	if (bola!=anterior) {
 			    		parpadeo.stop();
@@ -546,7 +580,6 @@ public class Bingo extends JFrame {
 				                    null,
 				                    null,
 				                    "");
-							
 							//If a string was returned, say so.
 							if ((s != null) && (s.length() > 0) && !estaNombre(s)) {
 							fwArchivoUsers = new FileWriter(ficheroUsers,true);
@@ -592,6 +625,7 @@ public class Bingo extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				mio=true;
 				btnLinea.setEnabled(false);
 				String[] opciones = new String[4];
 				String respu = preguntas[numerosCarton[preguntaLinea]-1] +"\n";
@@ -599,19 +633,19 @@ public class Bingo extends JFrame {
 					switch (i) {
 						case 0:
 							opciones[i]="A ";
-							respu += "\nA->" + respuestas[i][numerosCarton[preguntaLinea]-1];
+							respu += "\nA- " + respuestas[i][numerosCarton[preguntaLinea]-1];
 							break;
 						case 1:
 							opciones[i]="B ";
-							respu += "\nB-> " + respuestas[i][numerosCarton[preguntaLinea]-1];
+							respu += "\nB- " + respuestas[i][numerosCarton[preguntaLinea]-1];
 							break;
 						case 2:
 							opciones[i]="C";
-							respu += "\nC-> " + respuestas[i][numerosCarton[preguntaLinea]-1];
+							respu += "\nC- " + respuestas[i][numerosCarton[preguntaLinea]-1];
 							break;
 						case 3:
 							opciones[i]="D";
-							respu += "\nD-> " + respuestas[i][numerosCarton[preguntaLinea]-1];
+							respu += "\nD- " + respuestas[i][numerosCarton[preguntaLinea]-1];
 							break;
 					
 					}
@@ -655,6 +689,7 @@ public class Bingo extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				mio = true;
 				timer.stop();
 				//DESACTIVAR EL PROPIO NUEVA PARTIDA
 				try {
@@ -673,19 +708,19 @@ public class Bingo extends JFrame {
 					switch (i) {
 						case 0:
 							opciones[i]="A";
-							respu += "\nA-> " + respuestas[i][numerosCarton[preguntaBingo]-1];
+							respu += "\nA- " + respuestas[i][numerosCarton[preguntaBingo]-1];
 							break;
 						case 1:
 							opciones[i]="B";
-							respu += "\nB-> " + respuestas[i][numerosCarton[preguntaBingo]-1];
+							respu += "\nB- " + respuestas[i][numerosCarton[preguntaBingo]-1];
 							break;
 						case 2:
 							opciones[i]="C";
-							respu += "\nC-> " + respuestas[i][numerosCarton[preguntaBingo]-1];
+							respu += "\nC- " + respuestas[i][numerosCarton[preguntaBingo]-1];
 							break;
 						case 3:
 							opciones[i]="D";
-							respu += "\nD-> " + respuestas[i][numerosCarton[preguntaBingo]-1];
+							respu += "\nD- " + respuestas[i][numerosCarton[preguntaBingo]-1];
 							break;
 					
 					}

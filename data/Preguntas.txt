@@ -84,7 +84,7 @@ No existe(correcta)
 6 dias a la semana
 Las que el trabajador quiera hacer.
 Cuál es la jornada máxima semanal: 
-40 horas en cómputo anual(correcta).
+40 horas en cómputo anual.(correcta)
 37.5 horas en cómputo anual
 45 horas en cómputo anual. 
 1 horas en cómputo anual.
